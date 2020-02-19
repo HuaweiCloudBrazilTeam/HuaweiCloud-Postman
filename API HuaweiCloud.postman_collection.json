@@ -1,0 +1,806 @@
+{
+	"info": {
+		"_postman_id": "1048591f-2a67-46ef-9398-e266c37c4d2f",
+		"name": "HuaweiCloud API",
+		"description": "https://developer.huaweicloud.com/intl/en-us/endpoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "IAM - AuthN and AuthZ",
+			"item": [
+				{
+					"name": "Get New Token - region specific (project context)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a8865603-e52f-4a59-9c56-0f06879c74bd",
+								"exec": [
+									"pm.environment.set(\"token\", pm.response.headers.get(\"X-Subject-Token\"));",
+									"// pm.environment.set(\"token_timestamp\", new Date().getTime());",
+									"// pm.environment.set(\"token_date\", pm.response.headers.get(\"Date\"));",
+									"",
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData);",
+									"pm.environment.set(\"token_expires_at\", jsonData.token.expires_at);",
+									"pm.environment.set(\"project_name\", jsonData.token.project.name);",
+									"pm.environment.set(\"project_id\", jsonData.token.project.id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"auth\": {\r\n    \"identity\": {\r\n      \"methods\": [\r\n        \"password\"\r\n      ],\r\n      \"password\": {\r\n        \"user\": {\r\n          \"name\": \"{{user_name}}\",\r\n          \"password\": \"{{user_password}}\",\r\n          \"domain\": {\r\n            \"name\": \"{{account}}\"\r\n          }\r\n        }\r\n      }\r\n    },\r\n    \"scope\": {\r\n      \"project\": {\r\n        \"name\": \"{{region}}\"\r\n      }\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{endpoint_iam}}/v3/auth/tokens",
+							"protocol": "https",
+							"host": [
+								"{{endpoint_iam}}"
+							],
+							"path": [
+								"v3",
+								"auth",
+								"tokens"
+							]
+						},
+						"description": "Tokens obtained by calling this API using the global endpoint can be used for service access in all regions except Paris, Singapore, and Atlanta. Tokens obtained by calling this API using a region-specific endpoint can be used only in the same region\n\nhttps://support.huaweicloud.com/en-us/api-iam/en-us_topic_0057845583.html\n\nhttps://support.huaweicloud.com/en-us/iam_faq/iam_01_034.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get regions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=utf8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint_iam}}/v3/regions",
+							"protocol": "https",
+							"host": [
+								"{{endpoint_iam}}"
+							],
+							"path": [
+								"v3",
+								"regions"
+							]
+						},
+						"description": "Incompatible with *sa-brazil-1* region"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Projects ID for Regions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7ddba604-244e-4235-b7c2-f30cee4a1f0d",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData.projects);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint_iam}}/v3/projects",
+							"protocol": "https",
+							"host": [
+								"{{endpoint_iam}}"
+							],
+							"path": [
+								"v3",
+								"projects"
+							]
+						},
+						"description": "https://support-intl.huaweicloud.com/en-us/api-swr/swr_02_0009.html"
+					},
+					"response": []
+				}
+			],
+			"description": "\nhttps://docs.openstack.org/keystone/latest/api_curl_examples.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "db8bc782-839c-4b0e-af03-48e48d987501",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4703f90a-68f9-4741-9c3e-8520c6020c19",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ECS - Compute",
+			"item": [
+				{
+					"name": "ECS API",
+					"item": [
+						{
+							"name": "Get ECS instances details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=utf8",
+										"type": "text"
+									},
+									{
+										"key": "X-Auth-Token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v1/{{project_id}}/cloudservers/detail",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v1",
+										"{{project_id}}",
+										"cloudservers",
+										"detail"
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0094148850.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Query all tags in the region (project)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=utf8",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v1/{{project_id}}/cloudservers/tags",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v1",
+										"{{project_id}}",
+										"cloudservers",
+										"tags"
+									]
+								},
+								"description": "List all tags and respective values in the ECS compute instances in a particular region (specified through the project ID).\n\nFor more information check the documentation on [Querying Project Tags](https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0167811966.html)."
+							},
+							"response": []
+						},
+						{
+							"name": "Query tags from a specific ECS instance",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v1/{{project_id}}/cloudservers/{{server_id}}/tags",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v1",
+										"{{project_id}}",
+										"cloudservers",
+										"{{server_id}}",
+										"tags"
+									]
+								},
+								"description": "You need to fill the server_id in the respective variable.\nTo get the server id use on the requests that list the ECS instances.\n\n[Querying Tags of an ECS](https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0167811967.html)"
+							},
+							"response": []
+						},
+						{
+							"name": "Add Tags to a specific ECS instance",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"action\": \"create\",\n    \"tags\": [\n        {\n            \"key\": \"key1\",\n            \"value\": \"value1\"\n        },\n        {\n            \"key\": \"key2\",\n            \"value\": \"value2\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v1/{{project_id}}/cloudservers/{{server_id}}/tags/action",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v1",
+										"{{project_id}}",
+										"cloudservers",
+										"{{server_id}}",
+										"tags",
+										"action"
+									]
+								},
+								"description": "You need to fill the server_id in the respective variable.\nTo get the server id use on the requests that list the ECS instances.\n\n[Adding Tags to an ECS in a Batch](https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0167811963.html)"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "OpenStack Nova API",
+					"item": [
+						{
+							"name": "Limits",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=utf8",
+										"type": "text"
+									},
+									{
+										"key": "X-Auth-Token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v2/limits",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v2",
+										"limits"
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0094148850.html\n\nhttps://apiexplorer.developer.huaweicloud.com/apiexplorer/doc?product=ECS&api=GetServerLimits"
+							},
+							"response": []
+						},
+						{
+							"name": "SSH Keypairs",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v2/os-keypairs",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v2",
+										"os-keypairs"
+									]
+								},
+								"description": "## Documentação\n* https://docs.openstack.org/api-ref/compute/#list-keypairs"
+							},
+							"response": []
+						},
+						{
+							"name": "Flavors",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v2/flavors",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v2",
+										"flavors"
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0094148850.html\n\nhttps://apiexplorer.developer.huaweicloud.com/apiexplorer/doc?product=ECS&api=GetServerLimits"
+							},
+							"response": []
+						},
+						{
+							"name": "ECS instances",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=utf8",
+										"type": "text"
+									},
+									{
+										"key": "X-Auth-Token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v2/{{project_id}}/servers",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v2",
+										"{{project_id}}",
+										"servers"
+									]
+								},
+								"description": "## OpenStack CLI example\n``openstack server list``\n\n## Documentation\nhttps://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0094148850.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Start (Power-on) ECS instance",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"os-start\": {}\n}"
+								},
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v2.1/{{project_id}}/servers/{{server_id}}/action",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v2.1",
+										"{{project_id}}",
+										"servers",
+										"{{server_id}}",
+										"action"
+									]
+								},
+								"description": "https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0020212648.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Stop ECS instance",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"os-stop\": {}\n}"
+								},
+								"url": {
+									"raw": "https://{{endpoint_ecs}}/v2.1/{{project_id}}/servers/{{server_id}}/action",
+									"protocol": "https",
+									"host": [
+										"{{endpoint_ecs}}"
+									],
+									"path": [
+										"v2.1",
+										"{{project_id}}",
+										"servers",
+										"{{server_id}}",
+										"action"
+									]
+								},
+								"description": "https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0020212652.html"
+							},
+							"response": []
+						}
+					],
+					"description": "## Documentação\n* [OpenStack Nova APIs (Huawei)](https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0124385014.html)\n* [OpenStack API Reference: Compute](https://docs.openstack.org/api-ref/compute)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cae056b8-6720-4b29-af4e-ded7d46577a8",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "a040cb3b-7237-4198-832c-f235bbcf42df",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "API Versions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							},
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint_ecs}}/",
+							"protocol": "https",
+							"host": [
+								"{{endpoint_ecs}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0065792793.html"
+					},
+					"response": []
+				}
+			],
+			"description": "* [ECS API Reference](https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0020805967.html)\n* [ECS API Explorer](https://apiexplorer.developer.huaweicloud.com/apiexplorer/doc?product=ECS)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "80b61d18-01f0-4b8a-9a35-86be3d862030",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d031b028-f147-4ffe-a55b-30f5b12f2a46",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "OBS - Object Storage Service",
+			"item": [
+				{
+					"name": "Bucket versioning status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							},
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint_obs}}/{{obs_bucket_name}}/?versioning",
+							"protocol": "https",
+							"host": [
+								"{{endpoint_obs}}"
+							],
+							"path": [
+								"{{obs_bucket_name}}",
+								""
+							],
+							"query": [
+								{
+									"key": "versioning",
+									"value": null
+								}
+							]
+						},
+						"description": "https://support.huaweicloud.com/en-us/api-obs/en-us_topic_0100846757.html"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "TMS - Tag Management Services",
+			"item": [],
+			"description": "[TMS API Reference](https://support.huaweicloud.com/en-us/api-tms/en-us_topic_0170587798.html)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e8d3dcd3-a962-4738-a632-3ffa0fa74d96",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "270d4a24-828e-4d42-8618-9dc0c9e698f5",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DO NOT USE",
+			"item": [
+				{
+					"name": "DO NOT USE - Get Token - Global (domain context)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7f3637e1-27a9-4446-b4b4-04dcac8dde27",
+								"exec": [
+									"pm.environment.set(\"token\", pm.response.headers.get(\"X-Subject-Token\"));",
+									"pm.environment.set(\"token_timestamp\", new Date().getTime());",
+									"pm.environment.set(\"token_date\", pm.response.headers.get(\"Date\"));",
+									"",
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"token_expires_at\", jsonData.token.expires_at);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json;charset=utf8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"auth\": {\r\n    \"identity\": {\r\n      \"methods\": [\r\n        \"password\"\r\n      ],\r\n      \"password\": {\r\n        \"user\": {\r\n          \"name\": \"{{user_name}}\",\r\n          \"password\": \"{{user_password}}\",\r\n          \"domain\": {\r\n            \"name\": \"{{account}}\"\r\n          }\r\n        }\r\n      }\r\n    },\r\n    \"scope\": {\r\n      \"domain\": {\r\n        \"name\": \"{{account}}\"\r\n      }\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{endpoint_iam}}/v3/auth/tokens",
+							"protocol": "https",
+							"host": [
+								"{{endpoint_iam}}"
+							],
+							"path": [
+								"v3",
+								"auth",
+								"tokens"
+							]
+						},
+						"description": "Tokens obtained by calling this API using the global endpoint can be used for service access in all regions except Paris, Singapore, and Atlanta. Tokens obtained by calling this API using a region-specific endpoint can be used only in the same region\n\nhttps://support.huaweicloud.com/en-us/api-iam/en-us_topic_0057845583.html\n\nhttps://support.huaweicloud.com/en-us/iam_faq/iam_01_034.html"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c64b740f-d549-4755-94a4-ca583cad8afd",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a9682dd-b6af-448b-8bc1-b79338b7b89e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b9f75789-8109-48d7-9bb3-cfdb24bd5817",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e631a977-e250-425a-a035-ff70e32c9697",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "9cdcee86-754a-45a2-b08a-aed075ebe673",
+			"key": "account",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "a5ee4bab-d77a-4a44-8123-2e360a7c6859",
+			"key": "user_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "7e445c23-3279-414a-86e3-31dbf3e1cfd7",
+			"key": "user_password",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
