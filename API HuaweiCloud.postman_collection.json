@@ -1032,6 +1032,21 @@
 						},
 						{
 							"name": "List Elastic IPs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "85b3e97a-56a3-4e11-96f1-da03980fc458",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"console.log(jsonData);",
+											"",
+											"pm.environment.set(\"vpc_publicip_id\", jsonData.publicips[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -1047,7 +1062,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://vpc.{{region}}.myhuaweicloud.com/v1/{{project_id}}/publicips",
+									"raw": "https://vpc.{{region}}.myhuaweicloud.com/v1/{{project_id}}/publicips?status=DOWN",
 									"protocol": "https",
 									"host": [
 										"vpc",
@@ -1059,9 +1074,51 @@
 										"v1",
 										"{{project_id}}",
 										"publicips"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "DOWN"
+										}
 									]
 								},
-								"description": "* [Huawei Cloud IAM: Listing Elastic IPs](https://support.huaweicloud.com/intl/en-us/api-vpc/en-us_topic_0020090598.html)"
+								"description": "* [Huawei Cloud IAM: Listing Elastic IPs](https://support.huaweicloud.com/intl/en-us/api-vpc/vpc_eip_0003.html)"
+							},
+							"response": []
+						},
+						{
+							"name": "Releasing an Elastic IP",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"url": {
+									"raw": "https://vpc.{{region}}.myhuaweicloud.com/v1/{{project_id}}/publicips/{{vpc_publicip_id}}",
+									"protocol": "https",
+									"host": [
+										"vpc",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1",
+										"{{project_id}}",
+										"publicips",
+										"{{vpc_publicip_id}}"
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-vpc/vpc_eip_0005.html"
 							},
 							"response": []
 						}
@@ -1180,6 +1237,67 @@
 												"{{project_id}}",
 												"cloudservers",
 												"detail"
+											],
+											"query": [
+												{
+													"key": "status",
+													"value": "ACTIVE",
+													"disabled": true
+												}
+											]
+										},
+										"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0094148850.html"
+									},
+									"response": []
+								},
+								{
+									"name": "Obtaining the VNC Login Address",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+												"exec": [
+													"var jsonData = pm.response.json();",
+													"console.log(jsonData);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json;charset=utf8"
+											},
+											{
+												"key": "X-Auth-Token",
+												"type": "text",
+												"value": "{{token}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"remote_console\": {\n        \"protocol\": \"vnc\",\n        \"type\": \"novnc\"\n    }\n}"
+										},
+										"url": {
+											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers/{{ecs_server_id}}/remote_console",
+											"protocol": "https",
+											"host": [
+												"ecs",
+												"{{region}}",
+												"myhuaweicloud",
+												"com"
+											],
+											"path": [
+												"v1",
+												"{{project_id}}",
+												"cloudservers",
+												"{{ecs_server_id}}",
+												"remote_console"
 											]
 										},
 										"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0094148850.html"
@@ -2443,7 +2561,78 @@
 					"name": "IMS - Image Management Services",
 					"item": [
 						{
+							"name": "Openstack API",
+							"item": [],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
 							"name": "List Images",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "47e9a9bd-f63f-4da3-8a47-456b6c10774d",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"console.log(jsonData);",
+											"",
+											"pm.environment.set(\"ims_image_id\", jsonData.images[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://ims.{{region}}.myhuaweicloud.com/v2/cloudimages?__imagetype=private",
+									"protocol": "https",
+									"host": [
+										"ims",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v2",
+										"cloudimages"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Ubuntu 18.04 server 64bit",
+											"disabled": true
+										},
+										{
+											"key": "__imagetype",
+											"value": "private"
+										},
+										{
+											"key": "id",
+											"value": "{{ims_image_id}}",
+											"disabled": true
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-ims/en-us_topic_0020091565.html"
+							},
+							"response": []
+						},
+						{
+							"name": "List Images Copy",
 							"event": [
 								{
 									"listen": "test",
@@ -2895,6 +3084,339 @@
 									]
 								},
 								"description": "https://support.huaweicloud.com/en-us/api-sfs/en-us_topic_0171853653.html"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "AS - Auto Scaling",
+					"item": [
+						{
+							"name": "Querying AS Groups",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"console.log(jsonData);",
+											"",
+											"pm.environment.set(\"as_scaling_group_name\", jsonData.scaling_groups[0].scaling_group_name);",
+											"pm.environment.set(\"as_scaling_group_id\", jsonData.scaling_groups[0].scaling_group_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://as.{{region}}.myhuaweicloud.com/autoscaling-api/v1/{{project_id}}/scaling_group",
+									"protocol": "https",
+									"host": [
+										"as",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"autoscaling-api",
+										"v1",
+										"{{project_id}}",
+										"scaling_group"
+									],
+									"query": [
+										{
+											"key": "scaling_group_name",
+											"value": "as-group-test",
+											"disabled": true
+										},
+										{
+											"key": "scaling_configuration_id",
+											"value": "1d281494-6085-4579-b817-c1f813be835f",
+											"disabled": true
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-as/as_06_0102.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Modifying an AS Group",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"console.log(jsonData);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"scaling_group_name\": \"name-changed-with-API\",\n    \"min_instance_number\": 0,\n    \"lbaas_listeners\": [\n        {\n            \"weight\": 0,\n            \"listener_id\": null,\n            \"pool_id\": \"1d0c743c-858c-4012-8d13-6999096e19ad\",\n            \"protocol_port\": 80\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "https://as.{{region}}.myhuaweicloud.com/autoscaling-api/v1/{{project_id}}/scaling_group/{{as_scaling_group_id}}",
+									"protocol": "https",
+									"host": [
+										"as",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"autoscaling-api",
+										"v1",
+										"{{project_id}}",
+										"scaling_group",
+										"{{as_scaling_group_id}}"
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-as/as_06_0104.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting an AS Group",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://as.{{region}}.myhuaweicloud.com/autoscaling-api/v1/{{project_id}}/scaling_group/{{as_scaling_group_id}}",
+									"protocol": "https",
+									"host": [
+										"as",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"autoscaling-api",
+										"v1",
+										"{{project_id}}",
+										"scaling_group",
+										"{{as_scaling_group_id}}"
+									],
+									"query": [
+										{
+											"key": "force_delete",
+											"value": "yes",
+											"disabled": true
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-as/as_06_0105.html"
+							},
+							"response": []
+						}
+					],
+					"description": "https://support.huaweicloud.com/intl/en-us/api-as/as_06_0000.html",
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "RDS - Relational Database Services",
+					"item": [
+						{
+							"name": "Querying Details About DB Instances",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"console.log(jsonData);",
+											"",
+											"pm.environment.set(\"rds_instance_id\", jsonData.instances[0].id);",
+											"pm.environment.set(\"rds_instance_name\", jsonData.instances[0].name);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://rds.{{region}}.myhuaweicloud.com/v3/{{project_id}}/instances",
+									"protocol": "https",
+									"host": [
+										"rds",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v3",
+										"{{project_id}}",
+										"instances"
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-rds/rds_01_0004.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a DB Instance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"console.log(jsonData);",
+											"",
+											"pm.environment.set(\"rds_job_id\", jsonData.job_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://rds.{{region}}.myhuaweicloud.com/v3/{{project_id}}/instances/{{rds_instance_id}}",
+									"protocol": "https",
+									"host": [
+										"rds",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v3",
+										"{{project_id}}",
+										"instances",
+										"{{rds_instance_id}}"
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-rds/rds_01_0004.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Querying Task (job) Execution Status",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									},
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "https://rds.{{region}}.myhuaweicloud.com/v3/{{project_id}}/jobs?id={{rds_job_id}}",
+									"protocol": "https",
+									"host": [
+										"rds",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v3",
+										"{{project_id}}",
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{rds_job_id}}"
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-rds/rds_01_0003.html"
 							},
 							"response": []
 						}
@@ -5889,25 +6411,25 @@
 	],
 	"variable": [
 		{
-			"id": "86218c07-fbfe-4632-9c8b-8b5dd4f67d22",
+			"id": "61bbbeaa-eae3-415e-93cb-1529e2b83b72",
 			"key": "region",
 			"value": "ap-southeast-1",
 			"type": "string"
 		},
 		{
-			"id": "f38668c5-0080-4fab-abe6-8909971fdb70",
+			"id": "106257ca-c02b-4605-b923-2a201f9cc6d1",
 			"key": "account",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "fd614481-d575-41ff-82ee-f98a68d64921",
+			"id": "4f7603ad-84ba-496e-9611-c6018ce0dc11",
 			"key": "user_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "89351f82-2752-4c23-a71b-b02da64e7348",
+			"id": "9fa1685c-b749-46ad-8ca4-4d939b107c7e",
 			"key": "user_password",
 			"value": "",
 			"type": "string"
