@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "1048591f-2a67-46ef-9398-e266c37c4d2f",
 		"name": "HuaweiCloud API",
-		"description": "https://developer.huaweicloud.com/intl/en-us/endpoint",
+		"description": "Obrigado por utilizar a _collection_ Postman da Huawei Cloud.\n\nEstão cobertos nesta _collection_ os métodos de API para os principais serviços de _IaaS_ e _PaaS_ da Huawei Cloud.\n\nA Huawei Cloud fornece [documentação para todas APIs de serviço](https://developer.huaweicloud.com/en-us/openapilist), e esta _collection_ busca tornar o processo de experimentação e desenvolvimento mais fácil e interativo.\n\n## Configurando a autenticação e _session_\n\nÉ necessário já ter criado uma conta na Huawei Cloud. Caso ainda não tenha, acesse a [página inicial](huaweicloud.com/intl/pt-br), clique em **Registre-se**, e complete o processo de cadastro.\n\nA definição de qual região a ser usada ocorre criando uma ou mais _sessions_, em que a variável _region_ informa a região em específico. Assim você consegue facilmente alternar entre diferentes regiões da Huawei Cloud.\n\n### Para definir parâmetros de autenticação:\n1. Clique com o botão direito na _collection_ e em _Edit_\n1. Na aba _Variables_ preencha na coluna _Current Value_ os seguintes parâmetros\n  * **account**: nome da sua conta\n  * **user_name**: nome de usuário (igual ao nome da conta, caso você não tenha criado usuários extras)\n  * **user_password**: senha de autenticação\n1. Clique na engrenagem :gear: no lado superior direito para gerenciar os _environments_, e no botão **Add**\n1. Preencha o nome do novo _environment_, mencionando qual região, e crie uma variável _region_ conforme o exemplo, e clique no botão _X_:\n\n![alt text](https://raw.githubusercontent.com/HuaweiCloudBrazilTeam/Huawei-Cloud-Postman/master/images/postman_workspace.png \"Exemplo de criação da variável region numa nova session\")\n\nO próximo passo para que você possa consumir as APIs é solicitar um Token. Confira a documentação logo abaixo.\n\n### Abrindo chamados de suporte na Huawei Cloud\n\nPara abrir chamados de suporte com escopo técnico é necessário contratar algum plano de suporte.\n\nVocê pode ter **7 meses de suporte sem custo**, na modalidade _Developer_, usando o cupom de desconto [disponível nesta página](https://activity.huaweicloud.com/intl/en-us/support_plan/index.html).\n\n## Mantenedores\nEsta _collection_ foi criada e é mantida por [Thiago Hickmann](https://linkedin.com/in/ThiagoHickmann), com o apoio do restante da equipe de Solutions Architects da _Huawei Cloud Latin America_.\n\nSe você identificar algum bug ou sentir falta de algum método de API, abra uma [issue no repositório](https://github.com/HuaweiCloudBrazilTeam/Huawei-Cloud-Postman/issues), ou ainda entre em contato diretamente conosco.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -113,7 +113,10 @@
 					"response": []
 				}
 			],
-			"description": "\n\n* https://docs.openstack.org/keystone/latest/admin/tokens-overview.html",
+			"description": "Para realizar chamadas de API é necessário apresentar um _Token_, que serve para identificar o usuário.\n\nPara a maioria das operações você deve usar a chamada _Get New Token - region specific_. Essa chamada gera um Token específico para o _project_ da região selecionada na _session_.\n\nA exceção são as operações no próprio IAM, e de Billing (BSS), que precisam um Token com contexto _domain_, que tem permissões para acesso à conta como um todo. Nesse caso use a chamada _Get New Token - account/domain context - for IAM and Billing_.\n\nNão é necessário ajustar qualquer parâmetro da chamada para solicitar o Token. Usuário e senha são obtidos nas variáveis da _collection_\n\nO Token expira após 24h. Repita a chamada de Token se for o caso.\n\n## Documentação relevante\n* https://docs.openstack.org/keystone/latest/admin/tokens-overview.html",
+			"auth": {
+				"type": "noauth"
+			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -187,7 +190,11 @@
 												"id": "0835281e-6c3f-4e20-a024-9fb876211c12",
 												"exec": [
 													"var jsonData = pm.response.json();",
-													"console.log(jsonData);"
+													"console.log(jsonData);",
+													"",
+													"",
+													"pm.environment.set(\"vpn_gw_id\", jsonData.vpnservices[0].id);",
+													"pm.environment.set(\"vpn_gw_name\", jsonData.vpnservices[0].name);"
 												],
 												"type": "text/javascript"
 											}
@@ -265,7 +272,7 @@
 									"response": []
 								},
 								{
-									"name": "List IPsec connections",
+									"name": "List IPsec VPN connections",
 									"event": [
 										{
 											"listen": "test",
@@ -385,6 +392,90 @@
 												"v2.0",
 												"vpn",
 												"ipsecpolicies"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List VPNs (console API - requires Cookie)",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "{{console_cookie}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://console-intl.huaweicloud.com/vpc/rest/v1.5/{{project_id}}/vpn/vpnconnections?regionId={{region}}",
+											"protocol": "https",
+											"host": [
+												"console-intl",
+												"huaweicloud",
+												"com"
+											],
+											"path": [
+												"vpc",
+												"rest",
+												"v1.5",
+												"{{project_id}}",
+												"vpn",
+												"vpnconnections"
+											],
+											"query": [
+												{
+													"key": "regionId",
+													"value": "{{region}}"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Change VPN bandwidth (console API)",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "{{console_cookie}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"charge_mode\": \"bandwidth\",\n    \"bandwidth\": 3\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://console-intl.huaweicloud.com/vpc/rest/v2/{{project_id}}/vpngw/ipsec-gw/{{vpn_gw_id}}",
+											"protocol": "https",
+											"host": [
+												"console-intl",
+												"huaweicloud",
+												"com"
+											],
+											"path": [
+												"vpc",
+												"rest",
+												"v2",
+												"{{project_id}}",
+												"vpngw",
+												"ipsec-gw",
+												"{{vpn_gw_id}}"
 											]
 										}
 									},
@@ -646,59 +737,9 @@
 								"description": "https://support.huaweicloud.com/intl/en-us/api-vpc/vpc_eip_0005.html"
 							},
 							"response": []
-						},
-						{
-							"name": "#DRAFT# Querying VPC Routes",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "0835281e-6c3f-4e20-a024-9fb876211c12",
-										"exec": [
-											"var jsonData = pm.response.json();",
-											"console.log(jsonData);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"url": {
-									"raw": "https://vpc.{{region}}.myhuaweicloud.com/v2.0/vpc/routes",
-									"protocol": "https",
-									"host": [
-										"vpc",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v2.0",
-										"vpc",
-										"routes"
-									],
-									"query": [
-										{
-											"key": "vpc_id",
-											"value": "{{vpc_id}}",
-											"disabled": true
-										}
-									]
-								},
-								"description": "https://support.huaweicloud.com/en-us/api-vpc/vpc_route_0001.html"
-							},
-							"response": []
 						}
 					],
-					"description": "https://support.huaweicloud.com/intl/en-us/api-vpc/en-us_topic_0173364201.html",
+					"description": "https://support.huaweicloud.com/intl/en-us/api-vpc/vpc-api.pdf\n\nhttps://support.huaweicloud.com/intl/en-us/api-vpc/vpc_api_0000.html",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -761,7 +802,10 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"resize\": {\n        \"flavorRef\": \"s3.medium.2\"\n    }\n}"
+													"raw": "{\n    \"resize\": {\n        \"flavorRef\": \"s3.medium.2\"\n    }\n}",
+													"options": {
+														"raw": {}
+													}
 												},
 												"url": {
 													"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1.1/{{project_id}}/cloudservers/{{ecs_server_id}}/resize",
@@ -967,7 +1011,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"remote_console\": {\n        \"protocol\": \"vnc\",\n        \"type\": \"novnc\"\n    }\n}"
+											"raw": "{\n    \"remote_console\": {\n        \"protocol\": \"vnc\",\n        \"type\": \"novnc\"\n    }\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers/{{ecs_server_id}}/remote_console",
@@ -1019,7 +1066,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"server\": {\n        \"imageRef\": \"{{ims_image_id}}\",\n        \"flavorRef\": \"s3.medium.2\",\n        \"name\": \"newserver-{{$randomAdjective}}-{{$randomNoun}}\",\n        \"vpcid\": \"{{vpc_id}}\",\n        \"nics\": [\n            {\n                \"subnet_id\": \"{{subnet_id}}\"\n            }\n        ],\n        \"root_volume\": {\n            \"volumetype\": \"SATA\"\n        },\n        \"availability_zone\": \"{{region}}a\"\n    }\n}"
+											"raw": "{\n    \"server\": {\n        \"imageRef\": \"{{ims_image_id}}\",\n        \"flavorRef\": \"s3.medium.2\",\n        \"name\": \"newserver-{{$randomAdjective}}-{{$randomNoun}}\",\n        \"vpcid\": \"{{vpc_id}}\",\n        \"nics\": [\n            {\n                \"subnet_id\": \"{{subnet_id}}\"\n            }\n        ],\n        \"root_volume\": {\n            \"volumetype\": \"SATA\"\n        },\n        \"availability_zone\": \"{{region}}a\"\n    }\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers",
@@ -1073,7 +1123,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"os-start\": {\n        \"servers\": [\n            {\n                \"id\": \"{{ecs_server_id}}\"\n            }\n        ]\n    }\n}"
+											"raw": "{\n    \"os-start\": {\n        \"servers\": [\n            {\n                \"id\": \"{{ecs_server_id}}\"\n            }\n        ]\n    }\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers/action",
@@ -1128,7 +1181,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"os-stop\": {\n        \"type\": \"SOFT\",\n        \"servers\": [\n            {\n                \"id\": \"{{ecs_server_id}}\"\n            }\n        ]\n    }\n}"
+											"raw": "{\n    \"os-stop\": {\n        \"type\": \"SOFT\",\n        \"servers\": [\n            {\n                \"id\": \"{{ecs_server_id}}\"\n            }\n        ]\n    }\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers/action",
@@ -1183,7 +1239,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"reboot\": {\n        \"type\": \"SOFT\",\n        \"servers\": [\n            {\n                \"id\": \"{{ecs_server_id}}\"\n            }\n        ]\n    }\n}"
+											"raw": "{\n    \"reboot\": {\n        \"type\": \"SOFT\",\n        \"servers\": [\n            {\n                \"id\": \"{{ecs_server_id}}\"\n            }\n        ]\n    }\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers/action",
@@ -1238,7 +1297,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"servers\": [\r\n        {\r\n            \"id\": \"{{ecs_server_id}}\"\r\n        }\r\n    ], \r\n    \"delete_publicip\": false, \r\n    \"delete_volume\": false\r\n}"
+											"raw": "{\r\n    \"servers\": [\r\n        {\r\n            \"id\": \"{{ecs_server_id}}\"\r\n        }\r\n    ], \r\n    \"delete_publicip\": false, \r\n    \"delete_volume\": false\r\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers/delete",
@@ -1378,7 +1440,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"action\": \"create\",\n    \"tags\": [\n        {\n            \"key\": \"key1\",\n            \"value\": \"value1\"\n        },\n        {\n            \"key\": \"key2\",\n            \"value\": \"value2\"\n        }\n    ]\n}"
+											"raw": "{\n    \"action\": \"create\",\n    \"tags\": [\n        {\n            \"key\": \"key1\",\n            \"value\": \"value1\"\n        },\n        {\n            \"key\": \"key2\",\n            \"value\": \"value2\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers/{{ecs_server_id}}/tags/action",
@@ -1626,47 +1691,6 @@
 										"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0020212674.html"
 									},
 									"response": []
-								},
-								{
-									"name": "#DRAFT# ECS Management Console Logs",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"os-getConsoleOutput \": {\n        \"length\": \"-1\"\n    }\n}"
-										},
-										"url": {
-											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v2.1/{{project_id}}/servers/{{server_id}}/action",
-											"protocol": "https",
-											"host": [
-												"ecs",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v2.1",
-												"{{project_id}}",
-												"servers",
-												"{{server_id}}",
-												"action"
-											]
-										},
-										"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0065817689.html"
-									},
-									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -1679,18 +1703,7 @@
 									"name": "List ECS instances",
 									"request": {
 										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json;charset=utf8",
-												"type": "text"
-											},
-											{
-												"key": "X-Auth-Token",
-												"value": "{{token}}",
-												"type": "text"
-											}
-										],
+										"header": [],
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v2.1/{{project_id}}/servers",
 											"protocol": "https",
@@ -1707,6 +1720,57 @@
 											]
 										},
 										"description": "## OpenStack CLI example\n``openstack server list``\n\n## Documentation\nhttps://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0094148850.html"
+									},
+									"response": []
+								},
+								{
+									"name": "Server metadata",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+												"exec": [
+													"var jsonData = pm.response.json();",
+													"console.log(jsonData);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json;charset=utf8"
+											}
+										],
+										"url": {
+											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v1/{{project_id}}/cloudservers/{{ecs_server_id}}",
+											"protocol": "https",
+											"host": [
+												"ecs",
+												"{{region}}",
+												"myhuaweicloud",
+												"com"
+											],
+											"path": [
+												"v1",
+												"{{project_id}}",
+												"cloudservers",
+												"{{ecs_server_id}}"
+											],
+											"query": [
+												{
+													"key": "status",
+													"value": "ACTIVE",
+													"disabled": true
+												}
+											]
+										},
+										"description": "https://support.huaweicloud.com/intl/en-us/api-ecs/en-us_topic_0094148850.html"
 									},
 									"response": []
 								},
@@ -2110,7 +2174,7 @@
 							"response": []
 						}
 					],
-					"description": "\n* [Selecting an API Type or Version](https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0170928122.html)\n* [ECS API Reference](https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0020805967.html)\n* [ECS API Explorer](https://apiexplorer.developer.huaweicloud.com/apiexplorer/doc?product=ECS)",
+					"description": "* [ECS API Reference (PDF)](https://support.huaweicloud.com/en-us/api-ecs/ecs-api.pdf)\n* [Selecting an API Type or Version](https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0170928122.html)\n* [ECS API Reference](https://support.huaweicloud.com/en-us/api-ecs/en-us_topic_0020805967.html)\n* [ECS API Explorer](https://apiexplorer.developer.huaweicloud.com/apiexplorer/doc?product=ECS)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2244,7 +2308,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"ims_test_{{$randomUUID}}\",\n    \"description\": \"Create a system disk image from an ECS\",\n    \"instance_id\": \"{{ecs_server_id}}\"\n}"
+									"raw": "{\n    \"name\": \"ims_test_{{$randomUUID}}\",\n    \"description\": \"Create a system disk image from an ECS\",\n    \"instance_id\": \"{{ecs_server_id}}\"\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://ims.{{region}}.myhuaweicloud.com/v2/cloudimages/action",
@@ -2298,7 +2365,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"backup_whole_image\",\n    \"description\": \"Creating a full-ECS image using a cloud server backup\",\n    \"backup_id\": \"{{backup_id}}\",\n    \"whole_image_type\": \"CSBS\"\n}"
+									"raw": "{\n    \"name\": \"backup_whole_image\",\n    \"description\": \"Creating a full-ECS image using a cloud server backup\",\n    \"backup_id\": \"{{backup_id}}\",\n    \"whole_image_type\": \"CSBS\"\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://ims.{{region}}.myhuaweicloud.com/v1/cloudimages/wholeimages/action",
@@ -2463,7 +2533,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"ims_suse_copy2\",\n    \"description\": \"suse copy\"\n}"
+									"raw": "{\n    \"name\": \"ims_suse_copy2\",\n    \"description\": \"suse copy\"\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://ims.{{region}}.myhuaweicloud.com/v1/cloudimages/{{ims_image_id}}/copy",
@@ -2518,7 +2591,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"bucket_url\": \"suse-image-bucket:suse15_for_sap.image\",\n    \"is_quick_export\": true\n}"
+									"raw": "{\n    \"bucket_url\": \"suse-image-bucket:suse15_for_sap.image\",\n    \"is_quick_export\": true\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://ims.{{region}}.myhuaweicloud.com/v1/cloudimages/{{ims_image_id}}/file",
@@ -2648,43 +2724,6 @@
 				{
 					"name": "OBS - Object Storage Service",
 					"item": [
-						{
-							"name": "#DRAFT# List buckets",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									},
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "https://{{endpoint_obs}}/{{obs_bucket_name}}/?versioning",
-									"protocol": "https",
-									"host": [
-										"{{endpoint_obs}}"
-									],
-									"path": [
-										"{{obs_bucket_name}}",
-										""
-									],
-									"query": [
-										{
-											"key": "versioning",
-											"value": null
-										}
-									]
-								},
-								"description": "https://support.huaweicloud.com/intl/en-us/api-obs/en-us_topic_0100846734.html"
-							},
-							"response": []
-						},
 						{
 							"name": "Bucket versioning status",
 							"request": {
@@ -2908,7 +2947,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"tag\": {\n        \"key\": \"key1\",\n        \"value\": \"value1\"\n    }\n}"
+									"raw": "{\n    \"tag\": {\n        \"key\": \"key1\",\n        \"value\": \"value1\"\n    }\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://sfs.{{region}}.myhuaweicloud.com/v2/{{project_id}}/sfs/{{sfs_share_id}}/tags",
@@ -2998,6 +3040,119 @@
 							"response": []
 						},
 						{
+							"name": "Querying Tags of an ASG",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"console.log(jsonData);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://as.{{region}}.myhuaweicloud.com/autoscaling-api/v1/{{project_id}}/scaling_group_tag/{{as_scaling_group_id}}/tags",
+									"protocol": "https",
+									"host": [
+										"as",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"autoscaling-api",
+										"v1",
+										"{{project_id}}",
+										"scaling_group_tag",
+										"{{as_scaling_group_id}}",
+										"tags"
+									],
+									"query": [
+										{
+											"key": "scaling_group_name",
+											"value": "as-group-test",
+											"disabled": true
+										},
+										{
+											"key": "scaling_configuration_id",
+											"value": "1d281494-6085-4579-b817-c1f813be835f",
+											"disabled": true
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-as/as_06_1002.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Creating or Deleting Tags on an ASG",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f1fa083-7917-448a-9909-5e6081eb4609",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"tags\": [\n        {\n            \"key\": \"ENV15\",\n            \"value\": \"ENV15\"\n        },\n        {\n            \"key\": \"ENV151\",\n            \"value\": \"ENV151\"\n        }\n    ],\n    \"action\": \"create\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://as.{{region}}.myhuaweicloud.com/autoscaling-api/v1/{{project_id}}/scaling_group_tag/{{as_scaling_group_id}}/tags/action",
+									"protocol": "https",
+									"host": [
+										"as",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"autoscaling-api",
+										"v1",
+										"{{project_id}}",
+										"scaling_group_tag",
+										"{{as_scaling_group_id}}",
+										"tags",
+										"action"
+									],
+									"query": [
+										{
+											"key": "scaling_group_name",
+											"value": "as-group-test",
+											"disabled": true
+										},
+										{
+											"key": "scaling_configuration_id",
+											"value": "1d281494-6085-4579-b817-c1f813be835f",
+											"disabled": true
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-as/as_06_1003.html"
+							},
+							"response": []
+						},
+						{
 							"name": "Modifying an AS Group",
 							"event": [
 								{
@@ -3029,7 +3184,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"scaling_group_name\": \"name-changed-with-API\",\n    \"min_instance_number\": 0,\n    \"lbaas_listeners\": [\n        {\n            \"weight\": 0,\n            \"listener_id\": null,\n            \"pool_id\": \"1d0c743c-858c-4012-8d13-6999096e19ad\",\n            \"protocol_port\": 80\n        }\n    ]\n}"
+									"raw": "{\n    \"scaling_group_name\": \"name-changed-with-API\",\n    \"min_instance_number\": 0,\n    \"lbaas_listeners\": [\n        {\n            \"weight\": 0,\n            \"listener_id\": null,\n            \"pool_id\": \"1d0c743c-858c-4012-8d13-6999096e19ad\",\n            \"protocol_port\": 80\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://as.{{region}}.myhuaweicloud.com/autoscaling-api/v1/{{project_id}}/scaling_group/{{as_scaling_group_id}}",
@@ -3293,11 +3451,6 @@
 										"key": "Content-Type",
 										"type": "text",
 										"value": "application/json;charset=utf8"
-									},
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
 									}
 								],
 								"url": {
@@ -3372,6 +3525,59 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "CBR - Cloud Backup and Recovery",
+					"item": [
+						{
+							"name": "Querying the Vault List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://cbr.{{region}}.myhuaweicloud.com/v3/{{project_id}}/vaults",
+									"protocol": "https",
+									"host": [
+										"cbr",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v3",
+										"{{project_id}}",
+										"vaults"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "https://support.huaweicloud.com/en-us/api-cbr/cbr-api.pdf",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3f8c6bab-db3a-46c1-9c16-5324c86fc92d",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "d18b839d-a92b-409d-bb5a-a524c95eee12",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -3415,6 +3621,66 @@
 										"value": "application/json;charset=utf-8"
 									}
 								],
+								"url": {
+									"raw": "https://cce.{{region}}.myhuaweicloud.com/api/v3/projects/{{project_id}}/clusters",
+									"protocol": "https",
+									"host": [
+										"cce",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"api",
+										"v3",
+										"projects",
+										"{{project_id}}",
+										"clusters"
+									]
+								},
+								"description": "https://support.huaweicloud.com/en-us/api-cce/cce_02_0239.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a Cluster",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2374ef7d-3db9-463d-b80f-5aa153dcaced",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"",
+											"//pm.environment.set(\"cce_cluster_id\", jsonData.items[0].metadata.uid);",
+											"//pm.environment.set(\"cce_cluster_name\", jsonData.items[0].metadata.name);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf-8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"kind\": \"Cluster\",\n    \"apiVersion\": \"v3\",\n    \"metadata\": {\n        \"name\": \"mycluster-from-api-v11\"\n    },\n    \"spec\": {\n        \"type\": \"VirtualMachine\",\n        \"flavor\": \"cce.s1.small\",\n        \"version\": \"v1.11.7\",\n        \"description\": \"this is a demo cluster\",\n        \"hostNetwork\": {\n            \"vpc\": \"{{vpc_id}}\",\n            \"subnet\": \"{{subnet_id}}\"\n        },\n        \"containerNetwork\": {\n            \"mode\": \"overlay_l2\"\n        },\n        \"billingMode\": 0\n    }\n}",
+									"options": {
+										"raw": {}
+									}
+								},
 								"url": {
 									"raw": "https://cce.{{region}}.myhuaweicloud.com/api/v3/projects/{{project_id}}/clusters",
 									"protocol": "https",
@@ -4023,7 +4289,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"subject\": \"Test message from Postman\",\n    \"message\": \"Message body.\",\n    \"time_to_live\": \"3600\"\n}"
+									"raw": "{\n    \"subject\": \"Test message from Postman\",\n    \"message\": \"Message body.\",\n    \"time_to_live\": \"3600\"\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://smn.{{region}}.myhuaweicloud.com/v2/{{project_id}}/notifications/topics/{{smn_topic_urn}}/publish",
@@ -4082,11 +4351,6 @@
 							"request": {
 								"method": "GET",
 								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
 									{
 										"key": "Content-Type",
 										"type": "text",
@@ -4161,11 +4425,6 @@
 								"method": "GET",
 								"header": [
 									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
 										"key": "Content-Type",
 										"type": "text",
 										"value": "application/json;charset=utf8"
@@ -4208,11 +4467,6 @@
 							"request": {
 								"method": "GET",
 								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
 									{
 										"key": "Content-Type",
 										"type": "text",
@@ -4300,6 +4554,140 @@
 					"description": "https://support.huaweicloud.com/en-us/api-scm/scm-api.pdf",
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "FGS - FunctionGraph",
+					"item": [
+						{
+							"name": "List Functions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://functiongraph.{{region}}.myhuaweicloud.com/v2/{{project_id}}/fgs/functions",
+									"protocol": "https",
+									"host": [
+										"functiongraph",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v2",
+										"{{project_id}}",
+										"fgs",
+										"functions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "#DRAFT# Get Function Code",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://functiongraph.{{region}}.myhuaweicloud.com/v2/{{project_id}}/fgs/functions/{{function_urn}}/code",
+									"protocol": "https",
+									"host": [
+										"functiongraph",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v2",
+										"{{project_id}}",
+										"fgs",
+										"functions",
+										"{{function_urn}}",
+										"code"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "https://support.huaweicloud.com/en-us/api-functiongraph/functiongraph-api.pdf",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "790ec1c6-8382-4b33-b73d-00fb9a78483c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "586b02af-df94-446d-97be-76bad59099b5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "ELB - Elastic Load Balance",
+					"item": [
+						{
+							"name": "Querying Load Balancers (v1.0)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://elb.{{region}}.myhuaweicloud.com/v1.0/{{project_id}}/elbaas/loadbalancers",
+									"protocol": "https",
+									"host": [
+										"elb",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"{{project_id}}",
+										"elbaas",
+										"loadbalancers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Querying Load Balancers (v2.0)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://elb.{{region}}.myhuaweicloud.com/v2.0/lbaas/loadbalancers",
+									"protocol": "https",
+									"host": [
+										"elb",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v2.0",
+										"lbaas",
+										"loadbalancers"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -4323,7 +4711,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"url\": \"https://cdn.quizzclub.com/trivia/2017-07/the-quick-brown-fox-jumps-over-the-lazy-dog-is-an-example-of-what-type-of-sentence-or-verse.jpg\",\n    \"detect_direction\": true\n}"
+									"raw": "{\n    \"url\": \"https://cdn.quizzclub.com/trivia/2017-07/the-quick-brown-fox-jumps-over-the-lazy-dog-is-an-example-of-what-type-of-sentence-or-verse.jpg\",\n    \"detect_direction\": true\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/general-text",
@@ -4435,7 +4826,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"url\": \"https://answerdash-images.s3.amazonaws.com/1183/2163b3367a3c3d687ef68bba2b0b952c78f713e1/1528277944.perfect_20passport.jpg\"\n}"
+									"raw": "{\n    \"url\": \"https://answerdash-images.s3.amazonaws.com/1183/2163b3367a3c3d687ef68bba2b0b952c78f713e1/1528277944.perfect_20passport.jpg\"\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/passport",
@@ -4684,7 +5078,10 @@
 															"type": "file",
 															"src": "/C:/Users/t00548547/AppData/Local/Temp/ringo.jpg"
 														}
-													]
+													],
+													"options": {
+														"formdata": {}
+													}
 												},
 												"url": {
 													"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}/faces",
@@ -4792,7 +5189,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"face_set_name\": \"{{$randomNoun}}\",\n    \"face_set_capacity\": 10000,\n    \"external_fields\": {\n        \"timestamp\": {\n            \"type\": \"long\"\n        },\n        \"id\": {\n            \"type\": \"string\"\n        },\n        \"number\": {\n            \"type\": \"integer\"\n        }\n    }\n}"
+											"raw": "{\n    \"face_set_name\": \"{{$randomNoun}}\",\n    \"face_set_capacity\": 10000,\n    \"external_fields\": {\n        \"timestamp\": {\n            \"type\": \"long\"\n        },\n        \"id\": {\n            \"type\": \"string\"\n        },\n        \"number\": {\n            \"type\": \"integer\"\n        }\n    }\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets",
@@ -4912,7 +5312,10 @@
 											"type": "file",
 											"src": "/C:/Users/t00548547/AppData/Local/Temp/The_Fabs.jpg"
 										}
-									]
+									],
+									"options": {
+										"formdata": {}
+									}
 								},
 								"url": {
 									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-detect",
@@ -4962,7 +5365,10 @@
 											"type": "file",
 											"src": "/C:/Users/t00548547/AppData/Local/Temp/Paul_McCartney_Headshot_(cropped).jpg"
 										}
-									]
+									],
+									"options": {
+										"formdata": {}
+									}
 								},
 								"url": {
 									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-compare",
@@ -5007,7 +5413,10 @@
 											"type": "file",
 											"src": "/C:/Users/t00548547/AppData/Local/Temp/_methode_times_prod_web_bin_23c9c324-cb1f-11e9-85b5-4a6ddd1a4d1d.jpg"
 										}
-									]
+									],
+									"options": {
+										"formdata": {}
+									}
 								},
 								"url": {
 									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}/search",
@@ -5078,7 +5487,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"url\": \"{{celebrity_recognition_url}}\"\n}"
+									"raw": "{\n    \"url\": \"{{celebrity_recognition_url}}\"\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/celebrity-recognition",
@@ -5358,7 +5770,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"url\": \"{{image_tagging_url}}\",\n    \"language\": \"en\"\n}"
+									"raw": "{\n    \"url\": \"{{image_tagging_url}}\",\n    \"language\": \"en\"\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/tagging",
@@ -5500,7 +5915,10 @@
 											"type": "file",
 											"src": "/C:/Users/t00548547/AppData/Local/Temp/Dark_Nature.jpg"
 										}
-									]
+									],
+									"options": {
+										"formdata": {}
+									}
 								},
 								"url": {
 									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/vision/dark-enhance",
@@ -5697,50 +6115,6 @@
 								"description": "https://support.huaweicloud.com/en-us/api-em/en-us_topic_0121230883.html"
 							},
 							"response": []
-						},
-						{
-							"name": "#DRAFT# Querying Resources Added to an Enterprise Project",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "7ddba604-244e-4235-b7c2-f30cee4a1f0d",
-										"exec": [
-											"var jsonData = pm.response.json();",
-											"console.log(jsonData);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "https://eps.myhuaweicloud.com/v1.0/enterprise-projects/{{enterprise_project_id}}/resources/filter",
-									"protocol": "https",
-									"host": [
-										"eps",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v1.0",
-										"enterprise-projects",
-										"{{enterprise_project_id}}",
-										"resources",
-										"filter"
-									]
-								},
-								"description": "https://support.huaweicloud.com/en-us/api-em/en-us_topic_0133254025.html"
-							},
-							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -5808,6 +6182,47 @@
 							"path": [
 								"v3",
 								"roles"
+							]
+						},
+						"description": "https://support.huaweicloud.com/intl/en-us/api-iam/en-us_topic_0057845591.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Listing Agencies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"url": {
+							"raw": "https://iam.{{region}}.myhuaweicloud.com/v3.0/OS-AGENCY/agencies?domain_id={{iam_user_domain_id}}",
+							"protocol": "https",
+							"host": [
+								"iam",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v3.0",
+								"OS-AGENCY",
+								"agencies"
+							],
+							"query": [
+								{
+									"key": "domain_id",
+									"value": "{{iam_user_domain_id}}"
+								}
 							]
 						},
 						"description": "https://support.huaweicloud.com/intl/en-us/api-iam/en-us_topic_0057845591.html"
@@ -5896,7 +6311,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"credential\": {\n        \"user_id\": \"{{iam_user_id}}\"\n    }\n}"
+							"raw": "{\n    \"credential\": {\n        \"user_id\": \"{{iam_user_id}}\"\n    }\n}",
+							"options": {
+								"raw": {}
+							}
 						},
 						"url": {
 							"raw": "https://iam.{{region}}.myhuaweicloud.com/v3.0/OS-CREDENTIAL/credentials",
@@ -6416,18 +6834,141 @@
 			"name": "BSS - Billing",
 			"item": [
 				{
-					"name": "Billing",
+					"name": "Partner",
+					"item": [
+						{
+							"name": "Querying Customers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a658e2c-8e41-4220-b7ee-c40b86b83dd2",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"console.log(jsonData);",
+											"",
+											"pm.environment.set(\"bp_customer_domain_name\", jsonData.customerInfoList[0].domainName);",
+											"pm.environment.set(\"bp_customer_customer_id\", jsonData.customerInfoList[0].customerId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://bss-intl.myhuaweicloud.com/v1.0/{{iam_user_domain_id}}/partner/customer-mgr/query",
+									"protocol": "https",
+									"host": [
+										"bss-intl",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"{{iam_user_domain_id}}",
+										"partner",
+										"customer-mgr",
+										"query"
+									],
+									"query": [
+										{
+											"key": "cooperationTimeStart",
+											"value": "2019-07-18T00:00:00Z",
+											"disabled": true
+										},
+										{
+											"key": "cooperationTimeEnd",
+											"value": "2019-07-20T00:00:00Z",
+											"disabled": true
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-bpconsole/en-us_topic_0077254158.html"
+							},
+							"response": []
+						},
+						{
+							"name": "Querying Monthly Bills",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"url": {
+									"raw": "https://bss-intl.myhuaweicloud.com/v1.0/{{iam_user_domain_id}}/partner/account-mgr/postpaid-bill-summary?consume_month=2019-01",
+									"protocol": "https",
+									"host": [
+										"bss-intl",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"{{iam_user_domain_id}}",
+										"partner",
+										"account-mgr",
+										"postpaid-bill-summary"
+									],
+									"query": [
+										{
+											"key": "consume_month",
+											"value": "2019-01"
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-bpconsole/mb_00001.html"
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bfe5bc1e-bb96-4ca8-b81d-e2e917351d4e",
+								"type": "text/javascript",
+								"exec": [
+									"//pm.environment.set(\"partner_id\", pm.variables.get(\"iam_user_domain_id\"));"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ddd0a045-1aef-4d62-b052-6397276fc0c1",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Customer",
 					"item": [
 						{
 							"name": "Expenditure Summary",
 							"request": {
 								"method": "GET",
 								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
 									{
 										"key": "Content-Type",
 										"type": "text",
@@ -6467,11 +7008,6 @@
 							"request": {
 								"method": "GET",
 								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
 									{
 										"key": "Content-Type",
 										"type": "text",
@@ -6526,11 +7062,6 @@
 							"request": {
 								"method": "GET",
 								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
 									{
 										"key": "Content-Type",
 										"type": "text",
@@ -6591,11 +7122,6 @@
 								"method": "GET",
 								"header": [
 									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
 										"key": "Content-Type",
 										"type": "text",
 										"value": "application/json;charset=utf8"
@@ -6637,29 +7163,48 @@
 								"description": "* [Huawei OCE: Querying the Invoice List](https://support.huaweicloud.com/intl/en-us/api-oce/miv_01005.html)"
 							},
 							"response": []
-						}
-					],
-					"description": "\n## Pending\nCheck the right endpoint for INTERNATIONAL\n* https://bss-intl.myhuaweicloud.com\n* https://cbc.ap-southeast-1.myhuaweicloud.com",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "c862b352-db47-457f-917e-9b6519428895",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
 						},
 						{
-							"listen": "test",
-							"script": {
-								"id": "294ee186-d76d-43d7-9b94-7c64cf25b46f",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
+							"name": "Querying Orders",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"url": {
+									"raw": "https://bss-intl.myhuaweicloud.com/v1.0/{{iam_user_domain_id}}/common/order-mgr/orders/detail?page_size=100&page_index=1",
+									"protocol": "https",
+									"host": [
+										"bss-intl",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"{{iam_user_domain_id}}",
+										"common",
+										"order-mgr",
+										"orders",
+										"detail"
+									],
+									"query": [
+										{
+											"key": "page_size",
+											"value": "100"
+										},
+										{
+											"key": "page_index",
+											"value": "1"
+										}
+									]
+								},
+								"description": "https://support.huaweicloud.com/intl/en-us/api-bpconsole/en-us_topic_0083740673.html"
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -6683,7 +7228,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"regionId\": \"{{region}}\",\n    \"tenantId\": \"{{project_id}}\",\n    \"chargingMode\": 0,\n    \"periodType\": 2,\n    \"periodNum\": 1,\n    \"subscriptionNum\": 1,\n    \"periodEndDate\": \"\",\n    \"productInfos\": [\n        {\n            \"id\": \"1\",\n            \"cloudServiceType\": \"hws.service.type.ec2\",\n            \"resourceType\": \"hws.resource.type.vm\",\n            \"resourceSpecCode\": \"s2.small.1.linux\"\n        },\n        {\n            \"id\": \"2\",\n            \"cloudServiceType\": \"hws.service.type.ebs\",\n            \"resourceType\": \"hws.resource.type.volume\",\n            \"resourceSpecCode\": \"SATA\",\n            \"resourceSize\": 1,\n            \"resouceSizeMeasureId\": 17\n        },\n        {\n            \"id\": \"3\",\n            \"cloudServiceType\": \"hws.service.type.vpc\",\n            \"resourceType\": \"hws.resource.type.ip\",\n            \"resourceSpecCode\": \"5_bgp\"\n        },\n        {\n            \"id\": \"4\",\n            \"cloudServiceType\": \"hws.service.type.vpc\",\n            \"resourceType\": \"hws.resource.type.bandwidth\",\n            \"resourceSpecCode\": \"19_bgp\",\n            \"resourceSize\": 1,\n            \"resouceSizeMeasureId\": 15\n        }\n    ],\n    \"inquiryTime\": \"\"\n}"
+							"raw": "{\n    \"regionId\": \"{{region}}\",\n    \"tenantId\": \"{{project_id}}\",\n    \"chargingMode\": 0,\n    \"periodType\": 2,\n    \"periodNum\": 1,\n    \"subscriptionNum\": 1,\n    \"periodEndDate\": \"\",\n    \"productInfos\": [\n        {\n            \"id\": \"1\",\n            \"cloudServiceType\": \"hws.service.type.ec2\",\n            \"resourceType\": \"hws.resource.type.vm\",\n            \"resourceSpecCode\": \"s2.small.1.linux\"\n        },\n        {\n            \"id\": \"2\",\n            \"cloudServiceType\": \"hws.service.type.ebs\",\n            \"resourceType\": \"hws.resource.type.volume\",\n            \"resourceSpecCode\": \"SATA\",\n            \"resourceSize\": 1,\n            \"resouceSizeMeasureId\": 17\n        },\n        {\n            \"id\": \"3\",\n            \"cloudServiceType\": \"hws.service.type.vpc\",\n            \"resourceType\": \"hws.resource.type.ip\",\n            \"resourceSpecCode\": \"5_bgp\"\n        },\n        {\n            \"id\": \"4\",\n            \"cloudServiceType\": \"hws.service.type.vpc\",\n            \"resourceType\": \"hws.resource.type.bandwidth\",\n            \"resourceSpecCode\": \"19_bgp\",\n            \"resourceSize\": 1,\n            \"resouceSizeMeasureId\": 15\n        }\n    ],\n    \"inquiryTime\": \"\"\n}",
+							"options": {
+								"raw": {}
+							}
 						},
 						"url": {
 							"raw": "https://cbc.ap-southeast-1.myhuaweicloud.com/v1.0/{{project_id}}/customer/product-mgr/query-rating",
@@ -6966,6 +7514,81 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "CES - Cloud Eye Service",
+			"item": [
+				{
+					"name": "Querying the Metric List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ces.{{region}}.myhuaweicloud.com/V1.0/{{project_id}}/metrics",
+							"protocol": "https",
+							"host": [
+								"ces",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"V1.0",
+								"{{project_id}}",
+								"metrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Querying the Alarm Rule List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ces.{{region}}.myhuaweicloud.com/V1.0/{{project_id}}/alarms",
+							"protocol": "https",
+							"host": [
+								"ces",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"V1.0",
+								"{{project_id}}",
+								"alarms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reporting Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ces.{{region}}.myhuaweicloud.com/V1.0/{{project_id}}/events",
+							"protocol": "https",
+							"host": [
+								"ces",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"V1.0",
+								"{{project_id}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"auth": {
@@ -7000,26 +7623,84 @@
 				"id": "e631a977-e250-425a-a035-ff70e32c9697",
 				"type": "text/javascript",
 				"exec": [
-					""
+					"// Adapted from: https://explore.postman.com/templates/4594/visualizer---filter-response-body-data-using-jsonpath",
+					"",
+					"let template = `",
+					"<html>",
+					"<head>",
+					"    <script src=\"https://cdn.jsdelivr.net/npm/jsonpath@1.0.2/jsonpath.min.js\"></script>",
+					"    <script src=\"https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js\"></script>",
+					"</head>",
+					"<body>",
+					"    <div>",
+					"      <div>",
+					"        <input id=\"filter\" style=\"width:450px;\" type=\"text\" placeholder=\"Example query: $..name.first\">",
+					"      </div>",
+					"      <div>",
+					"        <button id=\"resetButton\" style=\"background-color:red;color:white;\">Reset</button>",
+					"        <input id=\"showErrors\" type=\"checkbox\" value=\"1\"/>",
+					"        <span class=\"item-text\" style=\"font-family:courier;\">Show Evaluation Errors</span>",
+					"      </div>",
+					"      <div id=\"errors\" style=\"font-family:courier;color:red;display:none;\"></div>",
+					"      <div>",
+					"        <p id=\"content\" style=\"font-family:courier;color:green;font-size:18px;\"></p>",
+					"      </div>",
+					"    </div>",
+					"</body>",
+					"</html>",
+					"",
+					"<script>",
+					"pm.getData( (error, value) => { ",
+					"    const extractedData = jsonpath.query(value, '$');",
+					"    ",
+					"    $(function() {",
+					"        $('#filter').keyup(function() {",
+					"            try {",
+					"                let filteredData = jsonpath.query(extractedData, $(this).val());",
+					"                $(\"#content, #errors\").empty();",
+					"                $(\"#content\").append(\"<pre><code>\" + JSON.stringify(filteredData, null, 4) + \"</code></pre>\");",
+					"            } catch (err) {",
+					"                console.info(err);",
+					"                $(\"#errors\").empty();",
+					"                $(\"#errors\").append(\"<pre><code>\" + err + \"</code></pre>\");",
+					"            }",
+					"        });",
+					"    });",
+					"    ",
+					"    $( \"#resetButton\" ).click(function() {",
+					"        $(\"#content, #errors\").empty();",
+					"        $(\"#filter\").val('');",
+					"        $(\"#content\").append(\"<pre><code>\" + JSON.stringify(extractedData, null, 4) + \"</code></pre>\");",
+					"    })",
+					"})",
+					"",
+					"$(function() {",
+					"  $(\"#showErrors\").on(\"click\",function() {",
+					"    $(\"#errors\").toggle(this.checked);",
+					"  });",
+					"});",
+					"</script>`",
+					"",
+					"pm.visualizer.set(template, pm.response.json())"
 				]
 			}
 		}
 	],
 	"variable": [
 		{
-			"id": "201d2977-8915-43e4-8c35-49f096d0d4c6",
+			"id": "5e29d68a-ab0e-458a-8611-bddbca046078",
 			"key": "account",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a5f20cff-da27-4993-8cce-a162dd64095c",
+			"id": "e1e509a2-444a-4ae9-83c8-88921e6f9b9a",
 			"key": "user_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "b0555c8c-5a59-4428-96c3-2cebe6829d35",
+			"id": "973feaa3-5e71-4b1c-a7e1-ba3d4fbdd9d6",
 			"key": "user_password",
 			"value": "",
 			"type": "string"
