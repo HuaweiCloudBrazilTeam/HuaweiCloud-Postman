@@ -4581,32 +4581,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "#DRAFT# Get Function Code",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "https://functiongraph.{{region}}.myhuaweicloud.com/v2/{{project_id}}/fgs/functions/{{function_urn}}/code",
-									"protocol": "https",
-									"host": [
-										"functiongraph",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v2",
-										"{{project_id}}",
-										"fgs",
-										"functions",
-										"{{function_urn}}",
-										"code"
-									]
-								}
-							},
-							"response": []
 						}
 					],
 					"description": "https://support.huaweicloud.com/en-us/api-functiongraph/functiongraph-api.pdf",
@@ -7688,19 +7662,19 @@
 	],
 	"variable": [
 		{
-			"id": "5e29d68a-ab0e-458a-8611-bddbca046078",
+			"id": "40bf7d61-343b-4086-b039-551a339d719a",
 			"key": "account",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e1e509a2-444a-4ae9-83c8-88921e6f9b9a",
+			"id": "514ef0dc-661a-4dff-8158-e12cbbbdc21e",
 			"key": "user_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "973feaa3-5e71-4b1c-a7e1-ba3d4fbdd9d6",
+			"id": "2744ff81-168f-458a-866b-cdc80c180c71",
 			"key": "user_password",
 			"value": "",
 			"type": "string"
