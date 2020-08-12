@@ -1114,11 +1114,6 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"body": {
@@ -1172,11 +1167,6 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"body": {
@@ -1230,11 +1220,6 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"body": {
@@ -1288,11 +1273,6 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"body": {
@@ -1327,11 +1307,6 @@
 									"request": {
 										"method": "GET",
 										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
 											{
 												"key": "Content-Type",
 												"type": "text",
@@ -1427,11 +1402,6 @@
 									"request": {
 										"method": "POST",
 										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
 											{
 												"key": "Content-Type",
 												"type": "text",
@@ -1540,11 +1510,6 @@
 									"request": {
 										"method": "GET",
 										"header": [
-											{
-												"key": "X-Auth-Token",
-												"value": "{{token}}",
-												"type": "text"
-											},
 											{
 												"key": "Content-Type",
 												"value": "application/json;charset=utf8",
@@ -1824,16 +1789,14 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"os-stop\": {}\n}"
+											"raw": "{\n    \"os-stop\": {}\n}",
+											"options": {
+												"raw": {}
+											}
 										},
 										"url": {
 											"raw": "https://ecs.{{region}}.myhuaweicloud.com/v2.1/{{project_id}}/servers/{{server_id}}/action",
@@ -1904,11 +1867,6 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"url": {
@@ -1939,11 +1897,6 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"url": {
@@ -1973,11 +1926,6 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"url": {
@@ -2023,11 +1971,6 @@
 												"key": "Content-Type",
 												"type": "text",
 												"value": "application/json;charset=utf8"
-											},
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
 											}
 										],
 										"url": {
@@ -2234,11 +2177,6 @@
 										"key": "Content-Type",
 										"type": "text",
 										"value": "application/json;charset=utf8"
-									},
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
 									}
 								],
 								"url": {
@@ -7562,6 +7500,29 @@
 					"response": []
 				}
 			],
+			"description": "https://support.huaweicloud.com/en-us/api-ces/ces-api.pdf",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a6a4ce26-3c65-4b58-be3b-bdd19afc3973",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "aaedcda3-b968-46cd-8f47-22eeb3cf805b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		}
 	],
@@ -7662,22 +7623,19 @@
 	],
 	"variable": [
 		{
-			"id": "40bf7d61-343b-4086-b039-551a339d719a",
+			"id": "35f4cd44-d02c-49c4-b1ee-98b4086b0bf3",
 			"key": "account",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "514ef0dc-661a-4dff-8158-e12cbbbdc21e",
+			"id": "303fdb12-d26d-453f-ab90-1c5fa851e443",
 			"key": "user_name",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "2744ff81-168f-458a-866b-cdc80c180c71",
+			"id": "6e429e5e-ca4a-492e-9d3c-7773e7e5e1ca",
 			"key": "user_password",
-			"value": "",
-			"type": "string"
+			"value": ""
 		}
 	],
 	"protocolProfileBehavior": {}
