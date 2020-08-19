@@ -628,6 +628,22 @@
 						},
 						{
 							"name": "List Security Groups",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7dde8a2c-a1a3-4540-8cb5-0e8329a47a91",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"console.log(jsonData);\r",
+											"\r",
+											"\r",
+											"pm.environment.set(\"security_group_id\", jsonData.security_groups[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -4605,1260 +4621,6 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "ModelArts AI and ML",
-			"item": [
-				{
-					"name": "OCR",
-					"item": [
-						{
-							"name": "General Text OCR",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"url\": \"https://cdn.quizzclub.com/trivia/2017-07/the-quick-brown-fox-jumps-over-the-lazy-dog-is-an-example-of-what-type-of-sentence-or-verse.jpg\",\n    \"detect_direction\": true\n}",
-									"options": {
-										"raw": {}
-									}
-								},
-								"url": {
-									"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/general-text",
-									"protocol": "https",
-									"host": [
-										"ocr",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v1.0",
-										"ocr",
-										"general-text"
-									]
-								},
-								"description": "* [Huawei Cloud OCR: General text OCR](https://support.huaweicloud.com/en-us/api-ocr/ocr_03_0042.html)"
-							},
-							"response": [
-								{
-									"name": "General Text OCR (FAILED)",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"url\": \"https://cdn.quizzclub.com/trivia/2017-07/the-quick-brown-fox-jumps-over-the-lazy-dog-is-an-example-of-what-type-of-sentence-or-verse.jpg\",\n    \"detect_direction\": true\n}"
-										},
-										"url": {
-											"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/general-text",
-											"protocol": "https",
-											"host": [
-												"ocr",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v1.0",
-												"ocr",
-												"general-text"
-											]
-										}
-									},
-									"status": "Not Found",
-									"code": 404,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Fri, 28 Feb 2020 12:48:11 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "Server",
-											"value": "api-gateway"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "0a695d00f12d123c17335209140ec8f7"
-										},
-										{
-											"key": "Access-Control-Allow-Origin",
-											"value": "*"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"error_msg\": \"The API does not exist or has not been published in the environment\",\n    \"error_code\": \"APIG.0101\",\n    \"request_id\": \"0a695d00f12d123c17335209140ec8f7\"\n}"
-								}
-							]
-						},
-						{
-							"name": "Passport OCR (external URL)",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"url\": \"https://answerdash-images.s3.amazonaws.com/1183/2163b3367a3c3d687ef68bba2b0b952c78f713e1/1528277944.perfect_20passport.jpg\"\n}",
-									"options": {
-										"raw": {}
-									}
-								},
-								"url": {
-									"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/passport",
-									"protocol": "https",
-									"host": [
-										"ocr",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v1.0",
-										"ocr",
-										"passport"
-									]
-								},
-								"description": "* [Huawei Cloud OCR: Passport OCR](https://support.huaweicloud.com/intl/en-us/api-ocr/ocr_03_0106.html)"
-							},
-							"response": [
-								{
-									"name": "Passport OCR (external URL)",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"url\": \"https://answerdash-images.s3.amazonaws.com/1183/2163b3367a3c3d687ef68bba2b0b952c78f713e1/1528277944.perfect_20passport.jpg\"\n}"
-										},
-										"url": {
-											"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/passport",
-											"protocol": "https",
-											"host": [
-												"ocr",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v1.0",
-												"ocr",
-												"passport"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Fri, 28 Feb 2020 12:47:27 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "X-Application-Context",
-											"value": "dispatcher-modelArts:8001"
-										},
-										{
-											"key": "X-ModelArts-Latency",
-											"value": "1670"
-										},
-										{
-											"key": "X-ModelArts-Trace",
-											"value": "a1bd804a8b99cb789ca4fccf181677a6"
-										},
-										{
-											"key": "Instance-Request-Count",
-											"value": "1"
-										},
-										{
-											"key": "Darklaunch-Rule-Name",
-											"value": "s-7ce2-f26a-201911072117"
-										},
-										{
-											"key": "Service-Version",
-											"value": "1.0.2"
-										},
-										{
-											"key": "Backend-Instance-Ip",
-											"value": "*******38.186:31285"
-										},
-										{
-											"key": "Server",
-											"value": "api-gateway"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "aebadaa1640c3cb49a8d023d6bff0233"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"result\": {\n        \"confidence\": {\n            \"country_code\": 0.978,\n            \"surname\": 0.978,\n            \"given_name\": 0.978,\n            \"passport_number\": 0.9084,\n            \"date_of_birth\": 0.9084,\n            \"sex\": 0.9084,\n            \"date_of_expiry\": 0.9084,\n            \"machine_code\": 0.978,\n            \"machine_code2\": 0.9084\n        },\n        \"country_code\": \"GBR\",\n        \"surname\": \"UNITED KINGDOM FIVE\",\n        \"given_name\": \"JODIE PIPPA\",\n        \"passport_number\": \"107185703\",\n        \"date_of_birth\": \"1985-01-17\",\n        \"sex\": \"F\",\n        \"date_of_expiry\": \"2016-01-31\",\n        \"machine_code\": \"P<GBRUNITED<KINGDOM<FIVE<<JODIE<PIPPA<<<<<<<\",\n        \"machine_code2\": \"1071857032GBR8501178F1601312<<<<<<<<<<<<<<02\",\n        \"extra_info\": {}\n    }\n}"
-								}
-							]
-						}
-					],
-					"description": "[OCR API Overview](https://support.huaweicloud.com/intl/en-us/api-ocr/ocr_03_0046.html)",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "f75217cd-749b-4b8d-b59d-e6e3400ca61a",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "07369a30-f536-4742-9b14-8af9ab25cbc2",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "FRS - Face Recognition Service",
-					"item": [
-						{
-							"name": "Facial Image Library",
-							"item": [
-								{
-									"name": "Facial Resource Management",
-									"item": [
-										{
-											"name": "Querying Faces",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "6d62d0b6-2916-4769-94f9-e67bfb8961da",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "X-Auth-Token",
-														"type": "text",
-														"value": "{{token}}"
-													},
-													{
-														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json;charset=utf8"
-													}
-												],
-												"url": {
-													"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}/faces?offset=0&limit=100",
-													"protocol": "https",
-													"host": [
-														"face",
-														"{{region}}",
-														"myhuaweicloud",
-														"com"
-													],
-													"path": [
-														"v2",
-														"{{project_id}}",
-														"face-sets",
-														"{{face_set_name}}",
-														"faces"
-													],
-													"query": [
-														{
-															"key": "offset",
-															"value": "0"
-														},
-														{
-															"key": "limit",
-															"value": "100"
-														}
-													]
-												},
-												"description": "* [Huawei Cloud FRS: Querying a Face](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0038.html)"
-											},
-											"response": []
-										},
-										{
-											"name": "Adding a Face",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "6d62d0b6-2916-4769-94f9-e67bfb8961da",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "X-Auth-Token",
-														"type": "text",
-														"value": "{{token}}"
-													},
-													{
-														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json;charset=utf8"
-													}
-												],
-												"body": {
-													"mode": "formdata",
-													"formdata": [
-														{
-															"key": "image_file",
-															"type": "file",
-															"src": "/C:/Users/t00548547/AppData/Local/Temp/ringo.jpg"
-														}
-													],
-													"options": {
-														"formdata": {}
-													}
-												},
-												"url": {
-													"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}/faces",
-													"protocol": "https",
-													"host": [
-														"face",
-														"{{region}}",
-														"myhuaweicloud",
-														"com"
-													],
-													"path": [
-														"v2",
-														"{{project_id}}",
-														"face-sets",
-														"{{face_set_name}}",
-														"faces"
-													]
-												},
-												"description": "* [Huawei Cloud FRS: Adding a Face](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0037.html)"
-											},
-											"response": []
-										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
-								},
-								{
-									"name": "Querying All Facial Image Libraries",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "5e2ea1f6-57e6-4709-b9bf-609aad319586",
-												"exec": [
-													"var jsonData = pm.response.json();",
-													"pm.environment.set(\"face_set_name\", jsonData.face_sets_info[0].face_set_name);",
-													"pm.environment.set(\"face_set_id\", jsonData.face_sets_info[0].face_set_id);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											}
-										],
-										"url": {
-											"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets",
-											"protocol": "https",
-											"host": [
-												"face",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v2",
-												"{{project_id}}",
-												"face-sets"
-											]
-										},
-										"description": "* [Huawei Cloud FRS: Querying All Facial Image Libraries](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0032.html)"
-									},
-									"response": []
-								},
-								{
-									"name": "Creating a Facial Image Library",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "6d62d0b6-2916-4769-94f9-e67bfb8961da",
-												"exec": [
-													"var jsonData = pm.response.json();",
-													"pm.environment.set(\"face_set_name\", jsonData.face_set_info.face_set_name);",
-													"pm.environment.set(\"face_set_id\", jsonData.face_set_info.face_set_id);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"face_set_name\": \"{{$randomNoun}}\",\n    \"face_set_capacity\": 10000,\n    \"external_fields\": {\n        \"timestamp\": {\n            \"type\": \"long\"\n        },\n        \"id\": {\n            \"type\": \"string\"\n        },\n        \"number\": {\n            \"type\": \"integer\"\n        }\n    }\n}",
-											"options": {
-												"raw": {}
-											}
-										},
-										"url": {
-											"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets",
-											"protocol": "https",
-											"host": [
-												"face",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v2",
-												"{{project_id}}",
-												"face-sets"
-											]
-										},
-										"description": "* [Huawei Cloud FRS: Creating a Facial Image Library](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0031.html)"
-									},
-									"response": []
-								},
-								{
-									"name": "Deleting a Facial Image Library",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "6d62d0b6-2916-4769-94f9-e67bfb8961da",
-												"exec": [
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "DELETE",
-										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											}
-										],
-										"url": {
-											"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}",
-											"protocol": "https",
-											"host": [
-												"face",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v2",
-												"{{project_id}}",
-												"face-sets",
-												"{{face_set_name}}"
-											]
-										},
-										"description": "* [Huawei Cloud FRS: Deleting a Facial Image Library](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0034.html)"
-									},
-									"response": []
-								}
-							],
-							"description": "https://support.huaweicloud.com/intl/en-us/api-face/face_02_0030.html",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "7595fb53-54a4-4b09-acb0-ddf87cf59ca2",
-										"type": "text/javascript",
-										"exec": [
-											""
-										]
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "096a2f78-500d-4dbf-8dd2-95f05397d27d",
-										"type": "text/javascript",
-										"exec": [
-											""
-										]
-									}
-								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
-						},
-						{
-							"name": "Face Detection (file upload)",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "image_file",
-											"type": "file",
-											"src": "/C:/Users/t00548547/AppData/Local/Temp/The_Fabs.jpg"
-										}
-									],
-									"options": {
-										"formdata": {}
-									}
-								},
-								"url": {
-									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-detect",
-									"protocol": "https",
-									"host": [
-										"face",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v2",
-										"{{project_id}}",
-										"face-detect"
-									]
-								},
-								"description": "* [Huawei Cloud FRS: Face Detection](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0027.html)"
-							},
-							"response": []
-						},
-						{
-							"name": "Face Verification (file upload)",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "image1_file",
-											"type": "file",
-											"src": "/C:/Users/t00548547/AppData/Local/Temp/The_Fabs.jpg"
-										},
-										{
-											"key": "image2_file",
-											"type": "file",
-											"src": "/C:/Users/t00548547/AppData/Local/Temp/Paul_McCartney_Headshot_(cropped).jpg"
-										}
-									],
-									"options": {
-										"formdata": {}
-									}
-								},
-								"url": {
-									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-compare",
-									"protocol": "https",
-									"host": [
-										"face",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v2",
-										"{{project_id}}",
-										"face-compare"
-									]
-								},
-								"description": "* [Huawei Cloud FRS: Face Verification](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0029.html)"
-							},
-							"response": []
-						},
-						{
-							"name": "Face Retrieval (file upload)",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "image_file",
-											"type": "file",
-											"src": "/C:/Users/t00548547/AppData/Local/Temp/_methode_times_prod_web_bin_23c9c324-cb1f-11e9-85b5-4a6ddd1a4d1d.jpg"
-										}
-									],
-									"options": {
-										"formdata": {}
-									}
-								},
-								"url": {
-									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}/search",
-									"protocol": "https",
-									"host": [
-										"face",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v2",
-										"{{project_id}}",
-										"face-sets",
-										"{{face_set_name}}",
-										"search"
-									]
-								},
-								"description": "* [Huawei Cloud FRS: Face Retrieval](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0035.html)"
-							},
-							"response": []
-						}
-					],
-					"description": "[Console](https://console-intl.huaweicloud.com/frs)\n\n## Disponível nas regiões\n* AP-Hong Kong (ap-southeast-1)\n* AP-Bangkok (ap-southeast-2)\n",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "46d9c5f7-a509-4f6f-8c2c-9586e668d9b8",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "85150c1c-80d4-471e-ab97-7eaf4dfaaa6a",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Image Recognition",
-					"item": [
-						{
-							"name": "Celebrity Recognition (URL)",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"url\": \"{{celebrity_recognition_url}}\"\n}",
-									"options": {
-										"raw": {}
-									}
-								},
-								"url": {
-									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/celebrity-recognition",
-									"protocol": "https",
-									"host": [
-										"image",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v1.0",
-										"image",
-										"celebrity-recognition"
-									]
-								},
-								"description": "* [Huawei Image Recognition: Celebrity Recognition](https://support.huaweicloud.com/en-us/api-image/image_03_0027.html)"
-							},
-							"response": [
-								{
-									"name": "Celebrity Recognition (URL): Will Smith",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"url\": \"{{celebrity_recognition_url}}\"\n}"
-										},
-										"url": {
-											"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/celebrity-recognition",
-											"protocol": "https",
-											"host": [
-												"image",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v1.0",
-												"image",
-												"celebrity-recognition"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Fri, 28 Feb 2020 14:56:44 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json;charset=UTF-8"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "X-Application-Context",
-											"value": "dispatcher-modelArts:8001"
-										},
-										{
-											"key": "X-ModelArts-Latency",
-											"value": "400"
-										},
-										{
-											"key": "X-ModelArts-Trace",
-											"value": "fafb554261151b4ec57c632e0486c257"
-										},
-										{
-											"key": "Instance-Request-Count",
-											"value": "1"
-										},
-										{
-											"key": "Darklaunch-Rule-Name",
-											"value": "s-ea50-b4b0-202002201950"
-										},
-										{
-											"key": "Service-Version",
-											"value": "1.0.2"
-										},
-										{
-											"key": "Backend-Instance-Ip",
-											"value": "*******33.235:30948"
-										},
-										{
-											"key": "Expires",
-											"value": "Thu, 01 Jan 1970 00:00:00 GMT"
-										},
-										{
-											"key": "X-Content-Type-Options",
-											"value": "nosniff"
-										},
-										{
-											"key": "X-XSS-Protection",
-											"value": "1; mode=block"
-										},
-										{
-											"key": "X-Frame-Options",
-											"value": "SAMEORIGIN"
-										},
-										{
-											"key": "Cache-Control",
-											"value": "no-cache, no-store, must-revalidate"
-										},
-										{
-											"key": "Pragma",
-											"value": "no-cache"
-										},
-										{
-											"key": "Server",
-											"value": "api-gateway"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "276202633c4ba50816f2084f460cccb9"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"result\": [\n        {\n            \"confidence\": 0.9997184274264257,\n            \"face_detail\": {\n                \"w\": 72,\n                \"h\": 97,\n                \"x\": 146,\n                \"y\": 22\n            },\n            \"label\": \"威尔·史密斯\"\n        }\n    ]\n}"
-								},
-								{
-									"name": "Celebrity Recognition (URL): Michael Jackson",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"url\": \"{{celebrity_recognition_url}}\"\n}"
-										},
-										"url": {
-											"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/celebrity-recognition",
-											"protocol": "https",
-											"host": [
-												"image",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v1.0",
-												"image",
-												"celebrity-recognition"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Fri, 28 Feb 2020 16:35:41 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json;charset=UTF-8"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "X-Application-Context",
-											"value": "dispatcher-modelArts:8001"
-										},
-										{
-											"key": "X-ModelArts-Latency",
-											"value": "419"
-										},
-										{
-											"key": "X-ModelArts-Trace",
-											"value": "aa497510fec107293ce62dfb96cc9533"
-										},
-										{
-											"key": "Instance-Request-Count",
-											"value": "1"
-										},
-										{
-											"key": "Darklaunch-Rule-Name",
-											"value": "s-ea50-b4b0-202002201950"
-										},
-										{
-											"key": "Service-Version",
-											"value": "1.0.2"
-										},
-										{
-											"key": "Backend-Instance-Ip",
-											"value": "*******33.235:30948"
-										},
-										{
-											"key": "Expires",
-											"value": "Thu, 01 Jan 1970 00:00:00 GMT"
-										},
-										{
-											"key": "X-Content-Type-Options",
-											"value": "nosniff"
-										},
-										{
-											"key": "X-XSS-Protection",
-											"value": "1; mode=block"
-										},
-										{
-											"key": "X-Frame-Options",
-											"value": "SAMEORIGIN"
-										},
-										{
-											"key": "Cache-Control",
-											"value": "no-cache, no-store, must-revalidate"
-										},
-										{
-											"key": "Pragma",
-											"value": "no-cache"
-										},
-										{
-											"key": "Server",
-											"value": "api-gateway"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "530dda0e44ad427501caf9fd8f29a253"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"result\": [\n        {\n            \"confidence\": 0.9945345826630939,\n            \"face_detail\": {\n                \"w\": 110,\n                \"h\": 144,\n                \"x\": 273,\n                \"y\": 14\n            },\n            \"label\": \"迈克尔·杰克逊\"\n        }\n    ]\n}"
-								}
-							]
-						},
-						{
-							"name": "Image Tagging (URL)",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"url\": \"{{image_tagging_url}}\",\n    \"language\": \"en\"\n}",
-									"options": {
-										"raw": {}
-									}
-								},
-								"url": {
-									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/tagging",
-									"protocol": "https",
-									"host": [
-										"image",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v1.0",
-										"image",
-										"tagging"
-									]
-								},
-								"description": "* [Huawei Image Recognition: Image Tagging](https://support.huaweicloud.com/en-us/api-image/image_03_0025.html)"
-							},
-							"response": [
-								{
-									"name": "Image Tagging: MGM Bedroom",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-Auth-Token",
-												"type": "text",
-												"value": "{{token}}"
-											},
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json;charset=utf8"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"url\": \"{{image_tagging_url}}\",\n    \"language\": \"en\"\n}"
-										},
-										"url": {
-											"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/tagging",
-											"protocol": "https",
-											"host": [
-												"image",
-												"{{region}}",
-												"myhuaweicloud",
-												"com"
-											],
-											"path": [
-												"v1.0",
-												"image",
-												"tagging"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Fri, 28 Feb 2020 15:03:38 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "X-Application-Context",
-											"value": "dispatcher-modelArts:8001"
-										},
-										{
-											"key": "X-ModelArts-Latency",
-											"value": "1115"
-										},
-										{
-											"key": "X-ModelArts-Trace",
-											"value": "bcaceb17590edae958b4b71f441df6dd"
-										},
-										{
-											"key": "Instance-Request-Count",
-											"value": "1"
-										},
-										{
-											"key": "Darklaunch-Rule-Name",
-											"value": "s-e966-f9bc-202001071704"
-										},
-										{
-											"key": "Service-Version",
-											"value": "0.0.7"
-										},
-										{
-											"key": "Backend-Instance-Ip",
-											"value": "******.32.94:32083"
-										},
-										{
-											"key": "Server",
-											"value": "api-gateway"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "2b25ca52cab588276bede8fac9eac136"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"result\": {\n        \"tags\": [\n            {\n                \"confidence\": \"70.45\",\n                \"i18n_tag\": {\n                    \"en\": \"Television room\",\n                    \"zh\": \"电视房\"\n                },\n                \"tag\": \"Television room\",\n                \"type\": \"scene\"\n            },\n            {\n                \"confidence\": \"62.87\",\n                \"i18n_tag\": {\n                    \"en\": \"Building\",\n                    \"zh\": \"建筑\"\n                },\n                \"tag\": \"Building\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"57.76\",\n                \"i18n_tag\": {\n                    \"en\": \"Computer monitor\",\n                    \"zh\": \"显示器\"\n                },\n                \"tag\": \"Computer monitor\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"55.02\",\n                \"i18n_tag\": {\n                    \"en\": \"Bedroom\",\n                    \"zh\": \"卧室\"\n                },\n                \"tag\": \"Bedroom\",\n                \"type\": \"scene\"\n            },\n            {\n                \"confidence\": \"52.55\",\n                \"i18n_tag\": {\n                    \"en\": \"Door\",\n                    \"zh\": \"门\"\n                },\n                \"tag\": \"Door\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"38.42\",\n                \"i18n_tag\": {\n                    \"en\": \"Chair\",\n                    \"zh\": \"椅子\"\n                },\n                \"tag\": \"Chair\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"38.3\",\n                \"i18n_tag\": {\n                    \"en\": \"Mirror\",\n                    \"zh\": \"镜子\"\n                },\n                \"tag\": \"Mirror\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"37.31\",\n                \"i18n_tag\": {\n                    \"en\": \"House\",\n                    \"zh\": \"房子\"\n                },\n                \"tag\": \"House\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"14.67\",\n                \"i18n_tag\": {\n                    \"en\": \"Daily supplies\",\n                    \"zh\": \"日常用品\"\n                },\n                \"tag\": \"Daily supplies\",\n                \"type\": \"object\"\n            }\n        ]\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "Dark Enhance (file)",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"type": "text",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json;charset=utf8"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "file",
-											"type": "file",
-											"src": "/C:/Users/t00548547/AppData/Local/Temp/Dark_Nature.jpg"
-										}
-									],
-									"options": {
-										"formdata": {}
-									}
-								},
-								"url": {
-									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/vision/dark-enhance",
-									"protocol": "https",
-									"host": [
-										"image",
-										"{{region}}",
-										"myhuaweicloud",
-										"com"
-									],
-									"path": [
-										"v1.0",
-										"vision",
-										"dark-enhance"
-									]
-								},
-								"description": "* [Huawei Image Recognition: Dark Recognition](https://support.huaweicloud.com/en-us/api-image/image_03_0019.html)"
-							},
-							"response": []
-						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
 			"name": "IAM - AuthN and AuthZ",
 			"item": [
 				{
@@ -7524,6 +6286,1530 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DWS - Data Warehouse Service",
+			"item": [
+				{
+					"name": "Querying the Supported Node Types",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "826a42fa-3412-41fa-b5b1-99521a5d3784",
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"dws_node_type_name\", jsonData.node_types[0].spec_name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://dws.{{region}}.myhuaweicloud.com/v1.0/{{project_id}}/node_types",
+							"protocol": "https",
+							"host": [
+								"dws",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"{{project_id}}",
+								"node_types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Querying the Cluster List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2a908d22-df7b-4d36-8e6e-2b027d05d8e3",
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"dws_cluster_id\", jsonData.clusters[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cluster\": {\r\n        \"node_type\": \"{{dws_node_type_name}}\",\r\n        \"number_of_node\": 3,\r\n        \"subnet_id\": \"{{subnet_id}}\",\r\n        \"security_group_id\": \"{{security_group_id}}\",\r\n        \"vpc_id\": \"{{vpc_id}}\",\r\n        \"port\": 8000,\r\n        \"name\": \"dws-1\",\r\n        \"user_name\": \"dbadmin\",\r\n        \"user_pwd\": \"Passw0rd!\",\r\n        \"public_ip\": {\r\n            \"public_bind_type\": \"auto_assign\"\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://dws.{{region}}.myhuaweicloud.com/v1.0/{{project_id}}/clusters",
+							"protocol": "https",
+							"host": [
+								"dws",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"{{project_id}}",
+								"clusters"
+							],
+							"query": [
+								{
+									"key": "datastoreType",
+									"value": "dws",
+									"disabled": true
+								},
+								{
+									"key": "enterprise_project_id",
+									"value": "{{enterprise_project_id}}",
+									"disabled": true
+								}
+							]
+						},
+						"description": "* [API Reference> API Description> Cluster Management APIs> Querying the Cluster List)](https://support.huaweicloud.com/intl/en-us/api-dws/dws_02_0018.html)\r\n\r\nObtém a lista de clusters DWS existentes, e armazena o ID do primeiro listado na variável `dws_cluster_id`.\r\n\r\nParâmetros `dataStoreType` e `enterprise_project_id` são opcionais, desabilitados por padrão nesta chamada de Postman."
+					},
+					"response": []
+				},
+				{
+					"name": "Creating a Cluster",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "99f2bc36-cd55-49ef-87eb-14473982aff5",
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"dws_cluster_id\", jsonData.cluster.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cluster\": {\r\n        \"node_type\": \"{{dws_node_type_name}}\",\r\n        \"number_of_node\": 3,\r\n        \"subnet_id\": \"{{subnet_id}}\",\r\n        \"security_group_id\": \"{{security_group_id}}\",\r\n        \"vpc_id\": \"{{vpc_id}}\",\r\n        \"port\": 8000,\r\n        \"name\": \"dws-1\",\r\n        \"user_name\": \"dbadmin\",\r\n        \"user_pwd\": \"Passw0rd!\",\r\n        \"public_ip\": {\r\n            \"public_bind_type\": \"auto_assign\"\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://dws.{{region}}.myhuaweicloud.com/v1.0/{{project_id}}/clusters",
+							"protocol": "https",
+							"host": [
+								"dws",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"{{project_id}}",
+								"clusters"
+							]
+						},
+						"description": "* [API Reference> API Description> Cluster Management APIs> Creating a Cluster)](https://support.huaweicloud.com/intl/en-us/api-dws/dws_02_0020.html)\r\n\r\n\r\nTodas variáveis mencionadas são armazenadas no *Environment*. Não use variáveis da Collection (exceto para detalhes de autenticação).\r\n\r\nVocê deve ajustar manualmente as variáveis quando as opções selecionadas automaticamente não lhe atenderem.\r\n\r\n\r\n1. Liste as VPCs (*List VPCs*), e selecione uma VPC pela variável `vpc_id`\r\n  * A variável do Environment `vpc_id` será automáticamente definida contendo a primeira VPC listada\r\n1. Liste as subnets da VPC selecionada (*List Subnets*)\r\n  * A variável `subnet_id`  será automáticamente definida contendo a primeira subnet da VPC\r\n1. Liste os ECS Security Groups (*List Security Groups*) e selecione o apropriado para o cluster DWS (crie manualmente um SG se for o caso)\r\n  * A variável `security_group_id` será automáticamente definida contendo o primeiro SG listado. **Isso provavelmente não é o que você quer**, e **você terá que obter o ID do Security Group correto no JSON de resposta da operação** *List Security Groups*\r\n1. Liste os tipos de *nodes* DWS suportados (*Querying the Supported Node Types*) na Region que você estiver\r\n * A variável `dws_node_type_name` será definida automaticamente contendo o primeiro *node type* listado\r\n1. Edite manualmente no corpo desta requisição os valores de:\r\n  * `number_of_node`\r\n  * `port`\r\n  * `name`\r\n  * `user_name`\r\n  * `user_pwd`\r\n\r\nEsta chamada terá como resposta o cluster ID do DWS, que é automaticamente armazenado na variável `dws_cluster_id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Querying Cluster Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b63da93d-30f4-4132-99c7-4b1c80e5a689",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://dws.{{region}}.myhuaweicloud.com/v1.0/{{project_id}}/clusters/{{dws_cluster_id}}",
+							"protocol": "https",
+							"host": [
+								"dws",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"{{project_id}}",
+								"clusters",
+								"{{dws_cluster_id}}"
+							]
+						},
+						"description": "DRAFT: Esta chamada de API retorna erro \"The API does not exist: method DELETE not found\" na região AP-BangKok.\r\n\r\n* [API Reference> API Description> Cluster Management APIs> Deleting a Cluster)](https://support.huaweicloud.com/intl/en-us/api-dws/dws_02_0021.html)\r\n\r\nExclui um cluster de DWS a partir do ID informado na variável `dws_cluster_id`.\r\n\r\nPara obter o ID do cluster use a chamada Postman *Querying the Cluster list*."
+					},
+					"response": []
+				},
+				{
+					"name": "Deleting a Cluster",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54d9adc4-f737-4655-902d-1084ef4b3537",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"keep_last_manual_snapshot\": 0\r\n}"
+						},
+						"url": {
+							"raw": "https://dws.{{region}}.myhuaweicloud.com/v1.0/{{project_id}}/clusters/{{dws_cluster_id}}",
+							"protocol": "https",
+							"host": [
+								"dws",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"{{project_id}}",
+								"clusters",
+								"{{dws_cluster_id}}"
+							]
+						},
+						"description": "* [API Reference> API Description> Cluster Management APIs> Deleting a Cluster)](https://support.huaweicloud.com/intl/en-us/api-dws/dws_02_0021.html)\r\n\r\nExclui um cluster de DWS a partir do ID informado na variável `dws_cluster_id`.\r\n\r\nPara obter o ID do cluster use a chamada Postman *Querying the Cluster list*."
+					},
+					"response": []
+				}
+			],
+			"description": "* [Data Warehouse Service > API Reference> API Description> Cluster Management APIs](https://support.huaweicloud.com/intl/en-us/api-dws/dws_02_0017.html)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7b9434f3-df96-4ec2-af7d-06cef94ce494",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "459fb092-d794-4b2e-8fdc-a5638edc67c7",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ModelArts Image Recognition",
+			"item": [
+				{
+					"name": "Celebrity Recognition (URL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"{{celebrity_recognition_url}}\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/celebrity-recognition",
+							"protocol": "https",
+							"host": [
+								"image",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"image",
+								"celebrity-recognition"
+							]
+						},
+						"description": "* [Huawei Image Recognition: Celebrity Recognition](https://support.huaweicloud.com/en-us/api-image/image_03_0027.html)"
+					},
+					"response": [
+						{
+							"name": "Celebrity Recognition (URL): Will Smith",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"url\": \"{{celebrity_recognition_url}}\"\n}"
+								},
+								"url": {
+									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/celebrity-recognition",
+									"protocol": "https",
+									"host": [
+										"image",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"image",
+										"celebrity-recognition"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 28 Feb 2020 14:56:44 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Application-Context",
+									"value": "dispatcher-modelArts:8001"
+								},
+								{
+									"key": "X-ModelArts-Latency",
+									"value": "400"
+								},
+								{
+									"key": "X-ModelArts-Trace",
+									"value": "fafb554261151b4ec57c632e0486c257"
+								},
+								{
+									"key": "Instance-Request-Count",
+									"value": "1"
+								},
+								{
+									"key": "Darklaunch-Rule-Name",
+									"value": "s-ea50-b4b0-202002201950"
+								},
+								{
+									"key": "Service-Version",
+									"value": "1.0.2"
+								},
+								{
+									"key": "Backend-Instance-Ip",
+									"value": "*******33.235:30948"
+								},
+								{
+									"key": "Expires",
+									"value": "Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Server",
+									"value": "api-gateway"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "276202633c4ba50816f2084f460cccb9"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": [\n        {\n            \"confidence\": 0.9997184274264257,\n            \"face_detail\": {\n                \"w\": 72,\n                \"h\": 97,\n                \"x\": 146,\n                \"y\": 22\n            },\n            \"label\": \"威尔·史密斯\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Celebrity Recognition (URL): Michael Jackson",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"url\": \"{{celebrity_recognition_url}}\"\n}"
+								},
+								"url": {
+									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/celebrity-recognition",
+									"protocol": "https",
+									"host": [
+										"image",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"image",
+										"celebrity-recognition"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 28 Feb 2020 16:35:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Application-Context",
+									"value": "dispatcher-modelArts:8001"
+								},
+								{
+									"key": "X-ModelArts-Latency",
+									"value": "419"
+								},
+								{
+									"key": "X-ModelArts-Trace",
+									"value": "aa497510fec107293ce62dfb96cc9533"
+								},
+								{
+									"key": "Instance-Request-Count",
+									"value": "1"
+								},
+								{
+									"key": "Darklaunch-Rule-Name",
+									"value": "s-ea50-b4b0-202002201950"
+								},
+								{
+									"key": "Service-Version",
+									"value": "1.0.2"
+								},
+								{
+									"key": "Backend-Instance-Ip",
+									"value": "*******33.235:30948"
+								},
+								{
+									"key": "Expires",
+									"value": "Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Server",
+									"value": "api-gateway"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "530dda0e44ad427501caf9fd8f29a253"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": [\n        {\n            \"confidence\": 0.9945345826630939,\n            \"face_detail\": {\n                \"w\": 110,\n                \"h\": 144,\n                \"x\": 273,\n                \"y\": 14\n            },\n            \"label\": \"迈克尔·杰克逊\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Image Tagging (URL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"{{image_tagging_url}}\",\n    \"language\": \"en\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/tagging",
+							"protocol": "https",
+							"host": [
+								"image",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"image",
+								"tagging"
+							]
+						},
+						"description": "* [Huawei Image Recognition: Image Tagging](https://support.huaweicloud.com/en-us/api-image/image_03_0025.html)"
+					},
+					"response": [
+						{
+							"name": "Image Tagging: MGM Bedroom",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"url\": \"{{image_tagging_url}}\",\n    \"language\": \"en\"\n}"
+								},
+								"url": {
+									"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/image/tagging",
+									"protocol": "https",
+									"host": [
+										"image",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"image",
+										"tagging"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 28 Feb 2020 15:03:38 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Application-Context",
+									"value": "dispatcher-modelArts:8001"
+								},
+								{
+									"key": "X-ModelArts-Latency",
+									"value": "1115"
+								},
+								{
+									"key": "X-ModelArts-Trace",
+									"value": "bcaceb17590edae958b4b71f441df6dd"
+								},
+								{
+									"key": "Instance-Request-Count",
+									"value": "1"
+								},
+								{
+									"key": "Darklaunch-Rule-Name",
+									"value": "s-e966-f9bc-202001071704"
+								},
+								{
+									"key": "Service-Version",
+									"value": "0.0.7"
+								},
+								{
+									"key": "Backend-Instance-Ip",
+									"value": "******.32.94:32083"
+								},
+								{
+									"key": "Server",
+									"value": "api-gateway"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "2b25ca52cab588276bede8fac9eac136"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": {\n        \"tags\": [\n            {\n                \"confidence\": \"70.45\",\n                \"i18n_tag\": {\n                    \"en\": \"Television room\",\n                    \"zh\": \"电视房\"\n                },\n                \"tag\": \"Television room\",\n                \"type\": \"scene\"\n            },\n            {\n                \"confidence\": \"62.87\",\n                \"i18n_tag\": {\n                    \"en\": \"Building\",\n                    \"zh\": \"建筑\"\n                },\n                \"tag\": \"Building\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"57.76\",\n                \"i18n_tag\": {\n                    \"en\": \"Computer monitor\",\n                    \"zh\": \"显示器\"\n                },\n                \"tag\": \"Computer monitor\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"55.02\",\n                \"i18n_tag\": {\n                    \"en\": \"Bedroom\",\n                    \"zh\": \"卧室\"\n                },\n                \"tag\": \"Bedroom\",\n                \"type\": \"scene\"\n            },\n            {\n                \"confidence\": \"52.55\",\n                \"i18n_tag\": {\n                    \"en\": \"Door\",\n                    \"zh\": \"门\"\n                },\n                \"tag\": \"Door\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"38.42\",\n                \"i18n_tag\": {\n                    \"en\": \"Chair\",\n                    \"zh\": \"椅子\"\n                },\n                \"tag\": \"Chair\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"38.3\",\n                \"i18n_tag\": {\n                    \"en\": \"Mirror\",\n                    \"zh\": \"镜子\"\n                },\n                \"tag\": \"Mirror\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"37.31\",\n                \"i18n_tag\": {\n                    \"en\": \"House\",\n                    \"zh\": \"房子\"\n                },\n                \"tag\": \"House\",\n                \"type\": \"object\"\n            },\n            {\n                \"confidence\": \"14.67\",\n                \"i18n_tag\": {\n                    \"en\": \"Daily supplies\",\n                    \"zh\": \"日常用品\"\n                },\n                \"tag\": \"Daily supplies\",\n                \"type\": \"object\"\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Dark Enhance (file)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/t00548547/AppData/Local/Temp/Dark_Nature.jpg"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "https://image.{{region}}.myhuaweicloud.com/v1.0/vision/dark-enhance",
+							"protocol": "https",
+							"host": [
+								"image",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"vision",
+								"dark-enhance"
+							]
+						},
+						"description": "* [Huawei Image Recognition: Dark Recognition](https://support.huaweicloud.com/en-us/api-image/image_03_0019.html)"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ModelArts OCR - Optical Character Recognition",
+			"item": [
+				{
+					"name": "General Text OCR",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"https://cdn.quizzclub.com/trivia/2017-07/the-quick-brown-fox-jumps-over-the-lazy-dog-is-an-example-of-what-type-of-sentence-or-verse.jpg\",\n    \"detect_direction\": true\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/general-text",
+							"protocol": "https",
+							"host": [
+								"ocr",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"ocr",
+								"general-text"
+							]
+						},
+						"description": "* [Huawei Cloud OCR: General text OCR](https://support.huaweicloud.com/en-us/api-ocr/ocr_03_0042.html)"
+					},
+					"response": [
+						{
+							"name": "General Text OCR (FAILED)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"url\": \"https://cdn.quizzclub.com/trivia/2017-07/the-quick-brown-fox-jumps-over-the-lazy-dog-is-an-example-of-what-type-of-sentence-or-verse.jpg\",\n    \"detect_direction\": true\n}"
+								},
+								"url": {
+									"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/general-text",
+									"protocol": "https",
+									"host": [
+										"ocr",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"ocr",
+										"general-text"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 28 Feb 2020 12:48:11 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Server",
+									"value": "api-gateway"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "0a695d00f12d123c17335209140ec8f7"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error_msg\": \"The API does not exist or has not been published in the environment\",\n    \"error_code\": \"APIG.0101\",\n    \"request_id\": \"0a695d00f12d123c17335209140ec8f7\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Passport OCR (external URL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"https://answerdash-images.s3.amazonaws.com/1183/2163b3367a3c3d687ef68bba2b0b952c78f713e1/1528277944.perfect_20passport.jpg\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/passport",
+							"protocol": "https",
+							"host": [
+								"ocr",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"ocr",
+								"passport"
+							]
+						},
+						"description": "* [Huawei Cloud OCR: Passport OCR](https://support.huaweicloud.com/intl/en-us/api-ocr/ocr_03_0106.html)"
+					},
+					"response": [
+						{
+							"name": "Passport OCR (external URL)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"url\": \"https://answerdash-images.s3.amazonaws.com/1183/2163b3367a3c3d687ef68bba2b0b952c78f713e1/1528277944.perfect_20passport.jpg\"\n}"
+								},
+								"url": {
+									"raw": "https://ocr.{{region}}.myhuaweicloud.com/v1.0/ocr/passport",
+									"protocol": "https",
+									"host": [
+										"ocr",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v1.0",
+										"ocr",
+										"passport"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 28 Feb 2020 12:47:27 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Application-Context",
+									"value": "dispatcher-modelArts:8001"
+								},
+								{
+									"key": "X-ModelArts-Latency",
+									"value": "1670"
+								},
+								{
+									"key": "X-ModelArts-Trace",
+									"value": "a1bd804a8b99cb789ca4fccf181677a6"
+								},
+								{
+									"key": "Instance-Request-Count",
+									"value": "1"
+								},
+								{
+									"key": "Darklaunch-Rule-Name",
+									"value": "s-7ce2-f26a-201911072117"
+								},
+								{
+									"key": "Service-Version",
+									"value": "1.0.2"
+								},
+								{
+									"key": "Backend-Instance-Ip",
+									"value": "*******38.186:31285"
+								},
+								{
+									"key": "Server",
+									"value": "api-gateway"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "aebadaa1640c3cb49a8d023d6bff0233"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": {\n        \"confidence\": {\n            \"country_code\": 0.978,\n            \"surname\": 0.978,\n            \"given_name\": 0.978,\n            \"passport_number\": 0.9084,\n            \"date_of_birth\": 0.9084,\n            \"sex\": 0.9084,\n            \"date_of_expiry\": 0.9084,\n            \"machine_code\": 0.978,\n            \"machine_code2\": 0.9084\n        },\n        \"country_code\": \"GBR\",\n        \"surname\": \"UNITED KINGDOM FIVE\",\n        \"given_name\": \"JODIE PIPPA\",\n        \"passport_number\": \"107185703\",\n        \"date_of_birth\": \"1985-01-17\",\n        \"sex\": \"F\",\n        \"date_of_expiry\": \"2016-01-31\",\n        \"machine_code\": \"P<GBRUNITED<KINGDOM<FIVE<<JODIE<PIPPA<<<<<<<\",\n        \"machine_code2\": \"1071857032GBR8501178F1601312<<<<<<<<<<<<<<02\",\n        \"extra_info\": {}\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "[OCR API Overview](https://support.huaweicloud.com/intl/en-us/api-ocr/ocr_03_0046.html)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f75217cd-749b-4b8d-b59d-e6e3400ca61a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "07369a30-f536-4742-9b14-8af9ab25cbc2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ModelArts FRS - Face Recognition Service",
+			"item": [
+				{
+					"name": "Facial Image Library",
+					"item": [
+						{
+							"name": "Facial Resource Management",
+							"item": [
+								{
+									"name": "Querying Faces",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "6d62d0b6-2916-4769-94f9-e67bfb8961da",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Auth-Token",
+												"type": "text",
+												"value": "{{token}}"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json;charset=utf8"
+											}
+										],
+										"url": {
+											"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}/faces?offset=0&limit=100",
+											"protocol": "https",
+											"host": [
+												"face",
+												"{{region}}",
+												"myhuaweicloud",
+												"com"
+											],
+											"path": [
+												"v2",
+												"{{project_id}}",
+												"face-sets",
+												"{{face_set_name}}",
+												"faces"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "0"
+												},
+												{
+													"key": "limit",
+													"value": "100"
+												}
+											]
+										},
+										"description": "* [Huawei Cloud FRS: Querying a Face](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0038.html)"
+									},
+									"response": []
+								},
+								{
+									"name": "Adding a Face",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "6d62d0b6-2916-4769-94f9-e67bfb8961da",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Auth-Token",
+												"type": "text",
+												"value": "{{token}}"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json;charset=utf8"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image_file",
+													"type": "file",
+													"src": "/C:/Users/t00548547/AppData/Local/Temp/ringo.jpg"
+												}
+											],
+											"options": {
+												"formdata": {}
+											}
+										},
+										"url": {
+											"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}/faces",
+											"protocol": "https",
+											"host": [
+												"face",
+												"{{region}}",
+												"myhuaweicloud",
+												"com"
+											],
+											"path": [
+												"v2",
+												"{{project_id}}",
+												"face-sets",
+												"{{face_set_name}}",
+												"faces"
+											]
+										},
+										"description": "* [Huawei Cloud FRS: Adding a Face](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0037.html)"
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Querying All Facial Image Libraries",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5e2ea1f6-57e6-4709-b9bf-609aad319586",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"face_set_name\", jsonData.face_sets_info[0].face_set_name);",
+											"pm.environment.set(\"face_set_id\", jsonData.face_sets_info[0].face_set_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"url": {
+									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets",
+									"protocol": "https",
+									"host": [
+										"face",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v2",
+										"{{project_id}}",
+										"face-sets"
+									]
+								},
+								"description": "* [Huawei Cloud FRS: Querying All Facial Image Libraries](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0032.html)"
+							},
+							"response": []
+						},
+						{
+							"name": "Creating a Facial Image Library",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6d62d0b6-2916-4769-94f9-e67bfb8961da",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"face_set_name\", jsonData.face_set_info.face_set_name);",
+											"pm.environment.set(\"face_set_id\", jsonData.face_set_info.face_set_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"face_set_name\": \"{{$randomNoun}}\",\n    \"face_set_capacity\": 10000,\n    \"external_fields\": {\n        \"timestamp\": {\n            \"type\": \"long\"\n        },\n        \"id\": {\n            \"type\": \"string\"\n        },\n        \"number\": {\n            \"type\": \"integer\"\n        }\n    }\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets",
+									"protocol": "https",
+									"host": [
+										"face",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v2",
+										"{{project_id}}",
+										"face-sets"
+									]
+								},
+								"description": "* [Huawei Cloud FRS: Creating a Facial Image Library](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0031.html)"
+							},
+							"response": []
+						},
+						{
+							"name": "Deleting a Facial Image Library",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6d62d0b6-2916-4769-94f9-e67bfb8961da",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"type": "text",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json;charset=utf8"
+									}
+								],
+								"url": {
+									"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}",
+									"protocol": "https",
+									"host": [
+										"face",
+										"{{region}}",
+										"myhuaweicloud",
+										"com"
+									],
+									"path": [
+										"v2",
+										"{{project_id}}",
+										"face-sets",
+										"{{face_set_name}}"
+									]
+								},
+								"description": "* [Huawei Cloud FRS: Deleting a Facial Image Library](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0034.html)"
+							},
+							"response": []
+						}
+					],
+					"description": "https://support.huaweicloud.com/intl/en-us/api-face/face_02_0030.html",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7595fb53-54a4-4b09-acb0-ddf87cf59ca2",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "096a2f78-500d-4dbf-8dd2-95f05397d27d",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Face Detection (file upload)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image_file",
+									"type": "file",
+									"src": "/C:/Users/t00548547/AppData/Local/Temp/The_Fabs.jpg"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-detect",
+							"protocol": "https",
+							"host": [
+								"face",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v2",
+								"{{project_id}}",
+								"face-detect"
+							]
+						},
+						"description": "* [Huawei Cloud FRS: Face Detection](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0027.html)"
+					},
+					"response": []
+				},
+				{
+					"name": "Face Verification (file upload)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image1_file",
+									"type": "file",
+									"src": "/C:/Users/t00548547/AppData/Local/Temp/The_Fabs.jpg"
+								},
+								{
+									"key": "image2_file",
+									"type": "file",
+									"src": "/C:/Users/t00548547/AppData/Local/Temp/Paul_McCartney_Headshot_(cropped).jpg"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-compare",
+							"protocol": "https",
+							"host": [
+								"face",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v2",
+								"{{project_id}}",
+								"face-compare"
+							]
+						},
+						"description": "* [Huawei Cloud FRS: Face Verification](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0029.html)"
+					},
+					"response": []
+				},
+				{
+					"name": "Face Retrieval (file upload)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;charset=utf8"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image_file",
+									"type": "file",
+									"src": "/C:/Users/t00548547/AppData/Local/Temp/_methode_times_prod_web_bin_23c9c324-cb1f-11e9-85b5-4a6ddd1a4d1d.jpg"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "https://face.{{region}}.myhuaweicloud.com/v2/{{project_id}}/face-sets/{{face_set_name}}/search",
+							"protocol": "https",
+							"host": [
+								"face",
+								"{{region}}",
+								"myhuaweicloud",
+								"com"
+							],
+							"path": [
+								"v2",
+								"{{project_id}}",
+								"face-sets",
+								"{{face_set_name}}",
+								"search"
+							]
+						},
+						"description": "* [Huawei Cloud FRS: Face Retrieval](https://support.huaweicloud.com/intl/en-us/api-face/face_02_0035.html)"
+					},
+					"response": []
+				}
+			],
+			"description": "[Console](https://console-intl.huaweicloud.com/frs)\n\n## Disponível nas regiões\n* AP-Hong Kong (ap-southeast-1)\n* AP-Bangkok (ap-southeast-2)\n",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "46d9c5f7-a509-4f6f-8c2c-9586e668d9b8",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "85150c1c-80d4-471e-ab97-7eaf4dfaaa6a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"auth": {
@@ -7623,17 +7909,17 @@
 	],
 	"variable": [
 		{
-			"id": "35f4cd44-d02c-49c4-b1ee-98b4086b0bf3",
+			"id": "1cde9158-0822-4674-9e63-a0cb7577bb6c",
 			"key": "account",
 			"value": ""
 		},
 		{
-			"id": "303fdb12-d26d-453f-ab90-1c5fa851e443",
+			"id": "412b1c45-7780-4c3f-9118-8f87a6b61719",
 			"key": "user_name",
 			"value": ""
 		},
 		{
-			"id": "6e429e5e-ca4a-492e-9d3c-7773e7e5e1ca",
+			"id": "fc63ec94-0b8b-4d86-81e3-5d87eb940f5a",
 			"key": "user_password",
 			"value": ""
 		}
